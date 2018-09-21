@@ -14,7 +14,7 @@ const Home = props => (
     <h1>Home Part!</h1>
     <p>There is a counter here, it goes up and down sometimes.</p>
     <p>
-      This is from a sample app, and I'm leaving it in as an example of
+      This is from a sample app, and I&apos;m leaving it in as an example of
       nontrivial source code for me to imitate.
     </p>
 

@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import { bindActionCreators, } from 'redux';
 import { connect, } from 'react-redux';
 import classNames from 'classnames';
-import { FieldStates, } from '../../modules/farm';
+import {
+  UNPLOWED,
+  PLOWED,
+  PLANTED,
+  READY_FOR_HARVEST,
+} from '../../modules/farm';
 
 const squarePropType = PropTypes.shape({
   state: PropTypes.string,
@@ -13,13 +18,13 @@ const gridPropType = PropTypes.arrayOf(PropTypes.arrayOf(squarePropType));
 
 const squareToAscii = state => {
   switch (state) {
-  case FieldStates.UNPLOWED:
+  case UNPLOWED:
     return '~';
-  case FieldStates.PLOWED:
+  case PLOWED:
     return '-';
-  case FieldStates.PLANTED:
+  case PLANTED:
     return '.';
-  case FieldStates.READY_FOR_HARVEST:
+  case READY_FOR_HARVEST:
     return 't';
   default:
     return '?';

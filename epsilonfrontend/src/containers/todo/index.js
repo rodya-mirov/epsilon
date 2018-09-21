@@ -9,7 +9,7 @@ const itemType = {
 };
 
 const listType = {
-  items: PropTypes.arrayOf(itemType),
+  items: PropTypes.arrayOf(PropTypes.shape(itemType)),
 };
 
 const ListItem = ({ title, text, }) => (

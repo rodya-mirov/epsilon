@@ -5,6 +5,7 @@ import App from './containers/app';
 import { Provider, } from 'react-redux';
 import { render, } from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
+import { UPDATE, } from './modules/update';
 
 import './index.css';
 
@@ -22,3 +23,6 @@ render(
 );
 
 registerServiceWorker();
+
+const msPerTick = 250;
+setInterval(() => store.dispatch({ type: UPDATE, }), msPerTick);
