@@ -62,8 +62,8 @@ PlotGrid.propTypes = {
 
 const Farm = props => {
   return (
-    <div>
-      <h1>Farming is Repetitive</h1>
+    <div className="container">
+      <h1 className="mt-5">Farming is Repetitive</h1>
 
       <p>
         Welcome to your lovely {props.numRows.toString()}x

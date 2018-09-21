@@ -6,10 +6,27 @@ import TodoList from '../todo';
 
 const App = () => (
   <div>
-    <header>
-      <Link to="/">Home</Link> <Link to="/farm">Farm</Link>{' '}
-      <Link to="/todo">TODO</Link>
-    </header>
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+      <div className="container">
+        <Link className="navbar-brand" to="/farm">
+          Farm
+        </Link>
+        <div className="collapse navbar-collapse" id="navbarResponsive">
+          <ul className="navbar-nav ml-auto">
+            <li className="nav-item">
+              <Link className="nav-link" to="/todo">
+                TODO
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/">
+                Home
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
     <main>
       <Route exact path="/" component={Home} />
