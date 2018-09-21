@@ -10,8 +10,9 @@ import {
 import PropTypes from 'prop-types';
 
 const Home = props => (
-  <div>
-    <h1>Home Part!</h1>
+  <div className="container">
+    <h1 className="mt-5">Home Part!</h1>
+
     <p>There is a counter here, it goes up and down sometimes.</p>
     <p>
       This is from a sample app, and I&apos;m leaving it in as an example of

@@ -23,7 +23,7 @@ ListItem.propTypes = itemType;
 
 const TodoList = ({ items, }) => {
   return (
-    <div>
+    <div className="container">
       {items.map((item, index) => (
         <ListItem key={index} {...item} />
       ))}
