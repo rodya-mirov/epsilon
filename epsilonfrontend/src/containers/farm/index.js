@@ -5,6 +5,8 @@ import { connect, } from 'react-redux';
 import classNames from 'classnames';
 import { FieldStates, } from '../../modules/farm';
 
+import './farm.css';
+
 const squarePropType = PropTypes.shape({
   state: PropTypes.string,
 });
