@@ -5,7 +5,6 @@ const makeTodoItem = (title, text) => ({
 
 const initialState = {
   items: [
-    makeTodoItem('Update loop', 'some things need to change periodically'),
     makeTodoItem('Farmers', 'little farmers should run around the field'),
     makeTodoItem('Modals', 'little popups would be nice'),
     makeTodoItem(
