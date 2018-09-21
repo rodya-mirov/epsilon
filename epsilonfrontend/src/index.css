@@ -1,0 +1,43 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+div.farm {
+  display: inline-block;
+  padding: 25px;
+  align-content: center;
+  vertical-align: middle;
+  border: 1px solid black;
+}
+
+table.farm {
+  font-family: "Courier New", Courier, monospace;
+  text-align: center;
+  background-color: black;
+  color: white;
+}
+
+td.farmplot {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  font-family: "Courier New", Courier, monospace;
+}
+
+td.farmplot-PLOWED {
+  color: burlywood;
+}
+
+td.farmplot-PLANTED {
+  color: green;
+}
+
+td.farmplot-UNPLOWED {
+  color: brown;
+}
+
+td.farmplot-READY_FOR_HARVEST {
+  color: chartreuse;
+}
