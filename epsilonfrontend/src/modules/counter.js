@@ -42,6 +42,7 @@ export default (state = initialState, action) => {
   }
 };
 
+// Thunk for dispatching an increment
 export const increment = () => {
   return dispatch => {
     dispatch({
@@ -54,6 +55,24 @@ export const increment = () => {
   };
 };
 
+// Thunk for dispatching a delayed increment
+export const incrementAsync = () => {
+  return dispatch => {
+    dispatch({
+      type: INCREMENT_REQUESTED,
+    });
+
+    return setTimeout(
+      () =>
+        dispatch({
+          type: INCREMENT,
+        }),
+      3000
+    );
+  };
+};
+
+// Thunk for dispatching a decrement
 export const decrement = () => {
   return dispatch => {
     dispatch({
@@ -63,5 +82,22 @@ export const decrement = () => {
     dispatch({
       type: DECREMENT,
     });
+  };
+};
+
+// Thunk for dispatching a delayed decrement
+export const decrementAsync = () => {
+  return dispatch => {
+    dispatch({
+      type: DECREMENT_REQUESTED,
+    });
+
+    return setTimeout(
+      () =>
+        dispatch({
+          type: DECREMENT,
+        }),
+      3000
+    );
   };
 };
