@@ -58,8 +58,8 @@ Square.propTypes = {
 };
 
 const PlotGrid = ({ squares, isFarmer, }) => (
-  <div className="farm">
-    <table className="farm">
+  <div className="farm rounded border">
+    <table className="farm rounded">
       <tbody>
         {squares.map((row, rowIndex) => (
           <tr key={rowIndex}>
@@ -106,7 +106,7 @@ const Farm = props => {
       />
 
       {/* TODO: remove the following, it's a placeholder to see if farmer viz is working */}
-      <div>
+      <div className="container mt-2">
         <ol>
           {props.farmers.map((farmer, ind) => (
             <li key={ind}>
