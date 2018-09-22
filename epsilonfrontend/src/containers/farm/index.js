@@ -9,6 +9,7 @@ import {
   PLOWED,
   PLANTED,
   READY_FOR_HARVEST,
+  getFarmerAction,
 } from '../../modules/farm';
 
 import './farm.css';
@@ -107,13 +108,16 @@ const Farm = props => {
 
       {/* TODO: remove the following, it's a placeholder to see if farmer viz is working */}
       <div className="container mt-2">
-        <ol>
+        <ul>
           {props.farmers.map((farmer, ind) => (
             <li key={ind}>
-              Farmer at ({farmer.col},{farmer.row})
+              Farmer {ind + 1} at ({farmer.col},{farmer.row}) is{' '}
+              {getFarmerAction(
+                props.squares.get(farmer.row).get(farmer.col).state
+              )}
             </li>
           ))}
-        </ol>
+        </ul>
       </div>
     </div>
   );
@@ -127,7 +131,8 @@ Farm.propTypes = {
   oddTick: PropTypes.bool,
 };
 
-const mapStateToProps = ({ farm, }) => {
+const mapStateToProps = state => {
+  const { farm, } = state;
   return {
     numRows: farm.numRows,
     numCols: farm.numCols,
