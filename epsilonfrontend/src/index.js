@@ -24,5 +24,5 @@ render(
 
 registerServiceWorker();
 
-const msPerTick = 250;
+const msPerTick = 350;
 setInterval(() => store.dispatch({ type: UPDATE, }), msPerTick);
