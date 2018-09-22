@@ -28,7 +28,7 @@ td.farmplot-PLOWED {
 }
 
 td.farmplot-PLANTED {
-  color: #154d2c;
+  color: #0f6109;
 }
 
 td.farmplot-UNPLOWED {
@@ -36,9 +36,9 @@ td.farmplot-UNPLOWED {
 }
 
 td.farmplot-READY_FOR_HARVEST {
-  color: #0f6109;
+  color: #79c52d;
 }
 
 td.farmplot-farmer {
-  color: #da9bdb;
+  color: #e2cd71;
 }
