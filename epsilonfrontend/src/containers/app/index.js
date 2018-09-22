@@ -4,16 +4,11 @@ import Home from '../home';
 import Farm from '../farm';
 import TodoList from '../todo';
 
-var bgColors = {
-  lightBlue: '#e3f2fd',
-};
+import './app.css';
 
 const App = () => (
   <div>
-    <nav
-      className="navbar navbar-expand-lg navbar-light static-top"
-      style={{ 'background-color': bgColors.lightBlue, }}
-    >
+    <nav className="navbar navbar-expand-lg navbar-light static-top lightblue-bg">
       <div className="container">
         <div className="collapse navbar-collapse" id="navbarResponsive">
           <ul className="navbar-nav mr-auto">
