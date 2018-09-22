@@ -9,23 +9,11 @@ import {
   PLOWED,
   PLANTED,
   READY_FOR_HARVEST,
-  getFarmerAction,
 } from '../../modules/farm';
+import { farmerPropType, squarePropType, gridPropType, } from './propTypes';
 
 import './farm.css';
-
-const farmerPropType = PropTypes.shape({
-  row: PropTypes.number,
-  col: PropTypes.number,
-});
-
-const squarePropType = PropTypes.shape({
-  state: PropTypes.string,
-});
-
-const gridPropType = ImmutablePropTypes.listOf(
-  ImmutablePropTypes.listOf(squarePropType)
-);
+import FarmerSummary from './farmerStates';
 
 const squareToAscii = state => {
   switch (state) {
@@ -106,19 +94,7 @@ const Farm = props => {
         isFarmer={makeIsFarmer(props.farmers, props.oddTick)}
       />
 
-      {/* TODO: remove the following, it's a placeholder to see if farmer viz is working */}
-      <div className="container mt-2">
-        <ul>
-          {props.farmers.map((farmer, ind) => (
-            <li key={ind}>
-              Farmer {ind + 1} at ({farmer.col},{farmer.row}) is{' '}
-              {getFarmerAction(
-                props.squares.get(farmer.row).get(farmer.col).state
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <FarmerSummary farmers={props.farmers} squares={props.squares} />
     </div>
   );
 };

@@ -1,4 +1,7 @@
+import { Cmd, loop, } from 'redux-loop';
+
 import { makeContainsFarmers, } from './utils';
+import { harvestAction, plantedAction, } from '../resources';
 
 export const UNPLOWED = 'UNPLOWED';
 export const PLOWED = 'PLOWED';
@@ -32,14 +35,10 @@ const NextState = {
 const maybePushFinishAction = (actions, currState) => {
   // if we just finished a harvest, trigger a harvest action
   if (currState === READY_FOR_HARVEST) {
-    actions.push({
-      type: 'HARVESTED',
-    });
+    actions.push(harvestAction(1));
     // if we just finished a plant, trigger a planted action
   } else if (currState === PLANTED) {
-    actions.push({
-      type: 'PLANTED',
-    });
+    actions.push(plantedAction(1));
   }
 };
 
@@ -80,7 +79,7 @@ export const updateSquares = state => {
   };
 
   return actions
-    ? nextState //loop(nextState, Cmd.list(actions, { sequence: true, }))
+    ? loop(nextState, Cmd.list(actions.map(Cmd.action), { sequence: true, }))
     : nextState;
 };
 

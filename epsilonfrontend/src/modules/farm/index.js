@@ -8,6 +8,7 @@ import {
   updateSquares,
 } from './plotState';
 import { updateFarmer, } from './farmer';
+import { reduceReducers, } from 'redux-loop';
 
 // largely arbitrary field state; deterministic "random" process
 const initialFieldState = (row, col) => {
@@ -87,12 +88,7 @@ const updateOddTick = state => ({
   oddTick: !state.oddTick,
 });
 
-const updatedFarm = state => {
-  state = updateSquares(state);
-  state = updateFarmers(state);
-  state = updateOddTick(state);
-  return state;
-};
+const updatedFarm = reduceReducers(updateSquares, updateFarmers, updateOddTick);
 
 export default (state = initialState, action) => {
   switch (action.type) {

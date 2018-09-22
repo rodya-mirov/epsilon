@@ -1,7 +1,7 @@
-import { combineReducers, } from 'redux';
+import { combineReducers, } from 'redux-loop';
 import counter from './counter';
 import farm from './farm';
-import todo from './todo';
+import resources from './resources';
 
 export default combineReducers({
   // this means state.counter is passed to the reducer called counter, "modified",
@@ -9,5 +9,5 @@ export default combineReducers({
   // because redux is magic
   counter,
   farm,
-  todo,
+  resources,
 });

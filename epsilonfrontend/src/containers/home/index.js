@@ -1,12 +1,7 @@
 import React from 'react';
 import { bindActionCreators, } from 'redux';
 import { connect, } from 'react-redux';
-import {
-  increment,
-  incrementAsync,
-  decrement,
-  decrementAsync,
-} from '../../modules/counter';
+import { increment, decrement, } from '../../modules/counter';
 import PropTypes from 'prop-types';
 
 const Home = props => (
@@ -37,24 +32,6 @@ const Home = props => (
             </button>
           </td>
         </tr>
-        <tr>
-          <td>
-            <button
-              className="btn btn-secondary"
-              onClick={props.incrementAsync}
-            >
-              Increment! Later!
-            </button>
-          </td>
-          <td>
-            <button
-              className="btn btn-secondary"
-              onClick={props.decrementAsync}
-            >
-              Decrement! Later!
-            </button>
-          </td>
-        </tr>
       </tbody>
     </table>
   </div>
@@ -82,9 +59,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       increment,
-      incrementAsync,
       decrement,
-      decrementAsync,
     },
     dispatch
   );

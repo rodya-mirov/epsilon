@@ -4,8 +4,6 @@
   "private": true,
   "dependencies": {
     "classnames": "^2.2.6",
-    "connected-react-router": "^4.4.1",
-    "history": "^4.7.2",
     "immutable": "^3.8.2",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
@@ -15,6 +13,7 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.5",
     "redux": "^4.0.0",
+    "redux-loop": "^4.4.1",
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
