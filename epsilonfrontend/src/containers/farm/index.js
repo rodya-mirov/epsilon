@@ -33,7 +33,7 @@ const squareToAscii = state => {
   case PLOWED:
     return '-';
   case PLANTED:
-    return '.';
+    return 'o';
   case READY_FOR_HARVEST:
     return 't';
   default:
