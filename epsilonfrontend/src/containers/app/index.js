@@ -4,15 +4,24 @@ import Home from '../home';
 import Farm from '../farm';
 import TodoList from '../todo';
 
+var bgColors = {
+  lightBlue: '#e3f2fd',
+};
+
 const App = () => (
   <div>
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <nav
+      className="navbar navbar-expand-lg navbar-light static-top"
+      style={{ 'background-color': bgColors.lightBlue, }}
+    >
       <div className="container">
-        <Link className="navbar-brand" to="/farm">
-          Farm
-        </Link>
         <div className="collapse navbar-collapse" id="navbarResponsive">
-          <ul className="navbar-nav ml-auto">
+          <ul className="navbar-nav mr-auto">
+            <li className="nav-item">
+              <Link className="nav-link" to="/Farm">
+                Farm
+              </Link>
+            </li>
             <li className="nav-item">
               <Link className="nav-link" to="/todo">
                 TODO
