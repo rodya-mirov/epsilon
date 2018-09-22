@@ -27,18 +27,32 @@ const Home = props => (
       <tbody>
         <tr>
           <td>
-            <button onClick={props.increment}>Increment!</button>
+            <button className="btn btn-secondary" onClick={props.increment}>
+              Increment!
+            </button>
           </td>
           <td>
-            <button onClick={props.decrement}>Decrement!</button>
+            <button className="btn btn-secondary" onClick={props.decrement}>
+              Decrement!
+            </button>
           </td>
         </tr>
         <tr>
           <td>
-            <button onClick={props.incrementAsync}>Increment! Later!</button>
+            <button
+              className="btn btn-secondary"
+              onClick={props.incrementAsync}
+            >
+              Increment! Later!
+            </button>
           </td>
           <td>
-            <button onClick={props.decrementAsync}>Decrement! Later!</button>
+            <button
+              className="btn btn-secondary"
+              onClick={props.decrementAsync}
+            >
+              Decrement! Later!
+            </button>
           </td>
         </tr>
       </tbody>

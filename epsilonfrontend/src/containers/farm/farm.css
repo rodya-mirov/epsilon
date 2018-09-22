@@ -11,8 +11,8 @@ div.farm {
 table.farm {
   font-family: "Courier New", Courier, monospace;
   text-align: center;
-  background-color: black;
-  color: white;
+  background-color: #b36b34;
+  color: black;
 }
 
 /* Class for individual plots on the farm */
@@ -24,21 +24,21 @@ td.farmplot {
 }
 
 td.farmplot-PLOWED {
-  color: burlywood;
+  color: #e7a51d;
 }
 
 td.farmplot-PLANTED {
-  color: green;
+  color: #0f6109;
 }
 
 td.farmplot-UNPLOWED {
-  color: brown;
+  color: #7e231c;
 }
 
 td.farmplot-READY_FOR_HARVEST {
-  color: chartreuse;
+  color: #79c52d;
 }
 
 td.farmplot-farmer {
-  color: purple;
+  color: #e2cd71;
 }
