@@ -1,14 +1,5 @@
-import { UPDATE, } from '../update';
 import { List, } from 'immutable';
-import {
-  UNPLOWED,
-  PLOWED,
-  PLANTED,
-  READY_FOR_HARVEST,
-  updateSquares,
-} from './plotState';
-import { updateFarmer, } from './farmer';
-import { reduceReducers, } from 'redux-loop';
+import { UNPLOWED, PLOWED, PLANTED, READY_FOR_HARVEST, } from './plotState';
 import { makeContainsFarmers, } from './utils';
 
 // largely arbitrary field state; deterministic "random" process
@@ -41,6 +32,7 @@ const makeSquares = (numRows, numCols, squareGen) =>
 const makeFarmerAt = (row, col) => ({
   row,
   col,
+  working: false,
 });
 
 const anyFarmer = ({ numRows, numCols, farmers, }) => {
@@ -84,7 +76,7 @@ const initNumRows = 8;
 const initNumCols = 10;
 const initNumFarmers = 5;
 
-const initialState = {
+export const initialState = {
   numRows: initNumRows,
   numCols: initNumCols,
   squares: makeSquares(initNumRows, initNumCols, (row, col) =>
@@ -94,30 +86,8 @@ const initialState = {
   oddTick: false,
 };
 
-const updateFarmers = state => {
-  const numFarmers = state.farmers.size;
-  for (var i = 0; i < numFarmers; i++) {
-    const farmerMove = updateFarmer(state, i);
-    const newFarmers = state.farmers.remove(i).insert(i, farmerMove);
-    state = {
-      ...state,
-      farmers: newFarmers,
-    };
-  }
-  return state;
-};
-
-const updateOddTick = state => ({
-  ...state,
-  oddTick: !state.oddTick,
-});
-
-const updatedFarm = reduceReducers(updateSquares, updateFarmers, updateOddTick);
-
 export default (state = initialState, action) => {
   switch (action.type) {
-  case UPDATE:
-    return updatedFarm(state);
   case HIRE_FARMER_ACTION_TYPE:
     return addFarmer(state);
   default:
@@ -132,4 +102,4 @@ export const hireFarmerAction = (count = 1) => ({
 });
 
 export { UNPLOWED, PLOWED, PLANTED, READY_FOR_HARVEST, };
-export { getFarmerAction, } from './plotState';
+export { getFarmerDescription, } from './plotState';

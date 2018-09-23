@@ -1,13 +1,19 @@
-import { combineReducers, } from 'redux-loop';
-import counter from './counter';
-import farm from './farm';
-import resources from './resources';
+import { combineReducers, } from 'redux';
+import farm, { initialState as farmInitialState, } from './farm';
+import resources, { initialState as resourcesInitialState, } from './resources';
+import update from './update';
 
-export default combineReducers({
-  // this means state.counter is passed to the reducer called counter, "modified",
-  // and then pasted back together as "state.counter" in the resulting state,
-  // because redux is magic
-  counter,
+const combined = combineReducers({
   farm,
   resources,
 });
+
+export const fullInitialState = {
+  farm: farmInitialState,
+  resources: resourcesInitialState,
+};
+
+export default (state, action) => {
+  const combinedOutput = combined(state, action);
+  return update(combinedOutput, action);
+};

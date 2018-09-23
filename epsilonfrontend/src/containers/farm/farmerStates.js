@@ -2,7 +2,7 @@ import React from 'react';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
-import { getFarmerAction, } from '../../modules/farm';
+import { getFarmerDescription, } from '../../modules/farm';
 import { farmerPropType, gridPropType, } from './propTypes';
 
 const FarmerSummary = props => (
@@ -11,7 +11,10 @@ const FarmerSummary = props => (
       {props.farmers.map((farmer, ind) => (
         <li key={ind}>
           Farmer {ind + 1} at ({farmer.col},{farmer.row}) is{' '}
-          {getFarmerAction(props.squares.get(farmer.row).get(farmer.col).state)}
+          {getFarmerDescription(
+            farmer,
+            props.squares.get(farmer.row).get(farmer.col).state
+          )}
         </li>
       ))}
     </ul>

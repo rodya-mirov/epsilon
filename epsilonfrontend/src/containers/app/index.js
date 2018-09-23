@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Link, BrowserRouter as Router, } from 'react-router-dom';
-import Home from '../home';
 import Farm from '../farm';
 import ResourceSummary from '../resources';
 
@@ -14,7 +13,7 @@ const App = () => (
           <div className="collapse navbar-collapse" id="navbarResponsive">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
-                <Link className="nav-link" to="/Farm">
+                <Link className="nav-link" to="/">
                   Farm
                 </Link>
               </li>
@@ -23,20 +22,15 @@ const App = () => (
                   Resources
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/">
-                  Home
-                </Link>
-              </li>
             </ul>
           </div>
         </div>
       </nav>
 
       <main>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/farm" component={Farm} />
         <Route exact path="/resources" component={ResourceSummary} />
+        {/* TODO: this puts Farm at / which is probably not what we want eventually */}
+        <Route exact path="/" component={Farm} />
       </main>
     </div>
   </Router>

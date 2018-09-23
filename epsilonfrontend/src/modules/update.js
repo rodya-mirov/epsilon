@@ -1,10 +1,17 @@
-// Used for all time-related update methods
-export const UPDATE = 'UPDATE';
+import { updater, } from '../update';
+import { fullInitialState, } from '../modules';
 
-export const update = () => {
-  return dispatch => {
-    dispatch({
-      type: UPDATE,
-    });
-  };
+// Used for the general update-loop
+const UPDATE = 'UPDATE';
+
+export const updateAction = () => ({
+  type: UPDATE,
+});
+
+export default (state = fullInitialState, action) => {
+  if (action.type === UPDATE) {
+    return updater(state);
+  } else {
+    return state;
+  }
 };
