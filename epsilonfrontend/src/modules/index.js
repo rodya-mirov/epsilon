@@ -1,4 +1,4 @@
-import { combineReducers, } from 'redux';
+import { combineReducers, reduceReducers, } from 'redux-loop';
 import farm, { initialState as farmInitialState, } from './farm';
 import resources, { initialState as resourcesInitialState, } from './resources';
 import update from './update';
@@ -13,7 +13,4 @@ export const fullInitialState = {
   resources: resourcesInitialState,
 };
 
-export default (state, action) => {
-  const combinedOutput = combined(state, action);
-  return update(combinedOutput, action);
-};
+export default reduceReducers(combined, update);
