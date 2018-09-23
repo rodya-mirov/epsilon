@@ -9,6 +9,7 @@ import {
 } from './plotState';
 import { updateFarmer, } from './farmer';
 import { reduceReducers, } from 'redux-loop';
+import { makeContainsFarmers, } from './utils';
 
 // largely arbitrary field state; deterministic "random" process
 const initialFieldState = (row, col) => {
@@ -42,6 +43,19 @@ const makeFarmerAt = (row, col) => ({
   col,
 });
 
+const anyFarmer = ({ numRows, numCols, farmers, }) => {
+  const isOccuppied = makeContainsFarmers(farmers);
+  for (var row = 0; row < numRows; row++) {
+    for (var col = 0; col < numCols; col++) {
+      if (!isOccuppied(row, col)) {
+        return makeFarmerAt(row, col);
+      }
+    }
+  }
+  return null;
+};
+
+// makes initial farmers
 const makeFarmers = (numRows, numCols, numFarmers) => {
   var farmers = List();
   for (var row = 0; row < numRows; row++) {
@@ -54,6 +68,16 @@ const makeFarmers = (numRows, numCols, numFarmers) => {
   }
   // NB: if numFarmers > numRows*numCols, this makes not enough farmers
   return farmers;
+};
+
+const addFarmer = state => {
+  const newFarmer = anyFarmer(state);
+  return newFarmer == null
+    ? state
+    : {
+      ...state,
+      farmers: state.farmers.push(newFarmer),
+    };
 };
 
 const initNumRows = 8;
@@ -94,10 +118,18 @@ export default (state = initialState, action) => {
   switch (action.type) {
   case UPDATE:
     return updatedFarm(state);
+  case HIRE_FARMER_ACTION_TYPE:
+    return addFarmer(state);
   default:
     return state;
   }
 };
+
+export const HIRE_FARMER_ACTION_TYPE = 'HIRE_FARMER';
+export const hireFarmerAction = (count = 1) => ({
+  type: HIRE_FARMER_ACTION_TYPE,
+  count,
+});
 
 export { UNPLOWED, PLOWED, PLANTED, READY_FOR_HARVEST, };
 export { getFarmerAction, } from './plotState';

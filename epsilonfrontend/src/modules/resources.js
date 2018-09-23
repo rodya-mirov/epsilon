@@ -13,7 +13,7 @@ export const plantedAction = (count = 1) => ({
 
 const initState = {
   fruit: 0,
-  seeds: 0,
+  seeds: 100,
 };
 
 export default (state = initState, action) => {

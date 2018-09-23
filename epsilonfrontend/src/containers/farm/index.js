@@ -9,6 +9,7 @@ import {
   PLOWED,
   PLANTED,
   READY_FOR_HARVEST,
+  hireFarmerAction,
 } from '../../modules/farm';
 import { farmerPropType, squarePropType, gridPropType, } from './propTypes';
 
@@ -95,6 +96,7 @@ const Farm = props => {
       />
 
       <FarmerSummary farmers={props.farmers} squares={props.squares} />
+      <button onClick={props.hireFarmer}>Hire Farmer</button>
     </div>
   );
 };
@@ -105,6 +107,7 @@ Farm.propTypes = {
   squares: gridPropType,
   farmers: ImmutablePropTypes.listOf(farmerPropType),
   oddTick: PropTypes.bool,
+  hireFarmer: PropTypes.func,
 };
 
 const mapStateToProps = state => {
@@ -118,8 +121,13 @@ const mapStateToProps = state => {
   };
 };
 
-// currently no actions
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      hireFarmer: () => hireFarmerAction(1),
+    },
+    dispatch
+  );
 
 export default connect(
   mapStateToProps,

@@ -12,7 +12,7 @@ export const READY_FOR_HARVEST = 'READY_FOR_HARVEST';
 const StateLength = {
   UNPLOWED: 8,
   PLOWED: 6,
-  PLANTED: 12,
+  PLANTED: 60,
   READY_FOR_HARVEST: 6,
 };
 
