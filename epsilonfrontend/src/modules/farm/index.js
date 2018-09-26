@@ -1,32 +1,40 @@
 import { List, } from 'immutable';
 import { UNPLOWED, PLOWED, PLANTED, READY_FOR_HARVEST, } from './plotState';
+import { getStateLength, } from '../../update/farm/plotState';
 import { makeContainsFarmers, } from './utils';
 
-// largely arbitrary field state; deterministic "random" process
-const initialFieldState = (row, col) => {
-  const xor = (row + (row ^ col)) % 7;
-  if (xor === 0) {
+import { alea, } from 'seedrandom';
+
+// largely arbitrary field state; deterministic "random" process from the input
+const initialFieldState = rng => {
+  const random = rng();
+  if (random < 0.1) {
     return PLOWED;
-  } else if (xor === 1) {
+  } else if (random < 0.2) {
     return PLANTED;
-  } else if (xor === 2) {
+  } else if (random < 0.3) {
     return READY_FOR_HARVEST;
   } else {
     return UNPLOWED;
   }
 };
 
-const initialSquare = (row, col) => ({
-  state: initialFieldState(row, col),
-  // no real significance to this number
-  timeLeftInState: (row * col) % 6,
-});
+const initialTimeLeftInState = (state, rng) => {
+  const random = rng();
+  return Math.floor(random * getStateLength(state));
+};
+
+const initialSquare = rng => {
+  const state = initialFieldState(rng);
+  const timeLeftInState = initialTimeLeftInState(state, rng);
+  return { state, timeLeftInState, };
+};
 
 // 2D arrays are indexed (row, col) which is (y, x), that's not weird
 // This way squares.get(i) is a row (which is how it's rendered)
 const makeSquares = (numRows, numCols, squareGen) =>
-  List(Array(numRows).keys()).map(row =>
-    List(Array(numCols).keys()).map(col => squareGen(row, col))
+  List(Array(numRows).keys()).map(() =>
+    List(Array(numCols).keys()).map(() => squareGen())
   );
 
 const makeFarmerAt = (row, col) => ({
@@ -37,8 +45,8 @@ const makeFarmerAt = (row, col) => ({
 
 const anyFarmer = ({ numRows, numCols, farmers, }) => {
   const isOccuppied = makeContainsFarmers(farmers);
-  for (var row = 0; row < numRows; row++) {
-    for (var col = 0; col < numCols; col++) {
+  for (let row = 0; row < numRows; row++) {
+    for (let col = 0; col < numCols; col++) {
       if (!isOccuppied(row, col)) {
         return makeFarmerAt(row, col);
       }
@@ -49,9 +57,9 @@ const anyFarmer = ({ numRows, numCols, farmers, }) => {
 
 // makes initial farmers
 const makeFarmers = (numRows, numCols, numFarmers) => {
-  var farmers = List();
-  for (var row = 0; row < numRows; row++) {
-    for (var col = 0; col < numCols; col++) {
+  let farmers = List();
+  for (let row = 0; row < numRows; row++) {
+    for (let col = 0; col < numCols; col++) {
       farmers = farmers.push(makeFarmerAt(row, col));
       if (farmers.size >= numFarmers) {
         return farmers;
@@ -76,15 +84,17 @@ const initNumRows = 8;
 const initNumCols = 10;
 const initNumFarmers = 5;
 
-export const initialState = {
-  numRows: initNumRows,
-  numCols: initNumCols,
-  squares: makeSquares(initNumRows, initNumCols, (row, col) =>
-    initialSquare(row, col)
-  ),
-  farmers: makeFarmers(initNumRows, initNumCols, initNumFarmers),
-  oddTick: false,
+const makeInitialState = rng => {
+  return {
+    numRows: initNumRows,
+    numCols: initNumCols,
+    squares: makeSquares(initNumRows, initNumCols, () => initialSquare(rng)),
+    farmers: makeFarmers(initNumRows, initNumCols, initNumFarmers),
+    oddTick: false,
+  };
 };
+
+export const initialState = makeInitialState(alea('farm rng seed'));
 
 export default (state = initialState, action) => {
   switch (action.type) {

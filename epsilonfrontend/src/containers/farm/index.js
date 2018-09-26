@@ -27,7 +27,7 @@ const squareToAscii = state => {
   case READY_FOR_HARVEST:
     return 't';
   default:
-    return '?';
+    throw new Error(`Unrecognized plot state ${state}`);
   }
 };
 

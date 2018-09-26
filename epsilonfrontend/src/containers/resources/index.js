@@ -13,6 +13,9 @@ const ResourceSummary = props => (
       <li>
         <b>Available Seeds: </b> {props.seeds}
       </li>
+      <li>
+        <b>Money: </b> {props.money}
+      </li>
     </ul>
   </div>
 );
@@ -20,11 +23,13 @@ const ResourceSummary = props => (
 ResourceSummary.propTypes = {
   fruit: PropTypes.number,
   seeds: PropTypes.number,
+  money: PropTypes.number,
 };
 
 const mapStateToProps = ({ resources, }) => ({
   fruit: resources.fruit,
   seeds: resources.seeds,
+  money: resources.money,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);

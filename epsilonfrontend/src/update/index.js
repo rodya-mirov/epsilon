@@ -3,9 +3,9 @@
  * This is so large, affects the entire state (conceivably), and
  * so unlike the overall design of redux that it deserves its own module
  */
-import { updateFarm, } from './farm';
+import { reduceReducers, } from 'redux-loop';
 
-export const updater = state => {
-  state = updateFarm(state);
-  return state;
-};
+import { updateFarm, } from './farm';
+import { updateMarket, } from './market';
+
+export const updater = reduceReducers(updateFarm, updateMarket);

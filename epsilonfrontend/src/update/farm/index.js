@@ -1,3 +1,5 @@
+import { reduceReducers, } from 'redux-loop';
+
 import { updatePlot, } from './plot';
 import { updateFarmers, } from './farmers';
 
@@ -21,9 +23,8 @@ const updateOddTickReducer = farmOnly(farmState => ({
   oddTick: !farmState.oddTick,
 }));
 
-export const updateFarm = state => {
-  state = updatedSquaresReducer(state);
-  state = updateFarmersReducer(state);
-  state = updateOddTickReducer(state);
-  return state;
-};
+export const updateFarm = reduceReducers(
+  updatedSquaresReducer,
+  updateFarmersReducer,
+  updateOddTickReducer
+);

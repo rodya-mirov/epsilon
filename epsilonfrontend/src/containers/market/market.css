@@ -1,0 +1,36 @@
+/* Container div surrounding the farm */
+div.market {
+  display: inline-block;
+  padding: 25px;
+  align-content: center;
+  vertical-align: middle;
+  border: 1px solid black;
+}
+
+/* Table of the farm plots */
+table.market {
+  font-family: "Courier New", Courier, monospace;
+  text-align: center;
+  background-color: #b36b34;
+  color: black;
+}
+
+/* Class for individual plots on the farm */
+td.marketplot {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  font-family: "Courier New", Courier, monospace;
+}
+
+td.marketplot-empty {
+  color: brown;
+}
+
+td.marketplot-merchant {
+  color: goldenrod;
+}
+
+td.marketplot-stand {
+  color: black;
+}

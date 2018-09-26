@@ -40,8 +40,8 @@ const updateFarmer = (farmerIndex, farm, resources) => {
   for (const desiredState of keyPrecedence) {
     // find an unoccuppied square of this state, if possible,
     // then work it
-    for (var rowIndex = 0; rowIndex < farm.numRows; rowIndex++) {
-      for (var colIndex = 0; colIndex < farm.numCols; colIndex++) {
+    for (let rowIndex = 0; rowIndex < farm.numRows; rowIndex++) {
+      for (let colIndex = 0; colIndex < farm.numCols; colIndex++) {
         const square = farm.squares.get(rowIndex).get(colIndex);
         // skip any square which is occuppied, in the wrong state, or unworkable
         if (
@@ -110,7 +110,7 @@ const updateFarmer = (farmerIndex, farm, resources) => {
 export const updateFarmers = ({ farm, resources, }) => {
   const numFarmers = farm.farmers.size;
 
-  for (var farmerIndex = 0; farmerIndex < numFarmers; farmerIndex++) {
+  for (let farmerIndex = 0; farmerIndex < numFarmers; farmerIndex++) {
     const result = updateFarmer(farmerIndex, farm, resources);
     farm = result.farm;
     resources = result.resources;
