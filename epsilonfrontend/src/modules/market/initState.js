@@ -20,6 +20,8 @@ import {
   RIGHT,
 } from './directions';
 
+import { WAITING_FOR_CUSTOMER, getStateLength, } from './merchantState';
+
 // used for initialization
 const initNumRows = 20;
 const initNumCols = 30;
@@ -157,7 +159,7 @@ const findAllowedStandPlaces = (numRows, numCols, isOccupied) => {
   return out;
 };
 
-const makeMerchantStand = (numRows, numCols, isOccupied, rng) => {
+const makeRawStand = (numRows, numCols, isOccupied, rng) => {
   const allowedPlaces = findAllowedStandPlaces(numRows, numCols, isOccupied);
 
   if (allowedPlaces) {
@@ -184,7 +186,7 @@ const makeInitialStands = (numRows, numCols, numStands, rng) => {
         square => row === square.row && col === square.col
       );
 
-    const { stand, standSquares, success = true, } = makeMerchantStand(
+    const { stand, standSquares, success = true, } = makeRawStand(
       numRows,
       numCols,
       isOccupied,
@@ -211,6 +213,19 @@ const makeSquares = (numRows, numCols, standSquares) => {
   };
 };
 
+const makeMerchantStand = (rawStand, rng) => {
+  const state = WAITING_FOR_CUSTOMER;
+  const timeLeftInState = Math.floor(getStateLength(state) * rng());
+  return {
+    rawStand,
+    state,
+    timeLeftInState,
+  };
+};
+
+const makeMerchantStands = (rawStands, rng) =>
+  rawStands.map(rawStand => makeMerchantStand(rawStand, rng));
+
 export const makeInitialState = rng => {
   const numRows = initNumRows;
   const numCols = initNumCols;
@@ -220,15 +235,14 @@ export const makeInitialState = rng => {
     initNumStands,
     rng
   );
-  // TODO: merchant objects? NB stands are not rendered so, unclear what we want to do, here
-  // const { merchants, } = makeMerchants(stands);
+
+  const merchantStands = makeMerchantStands(stands, rng);
   const { squares, } = makeSquares(numRows, numCols, standSquares);
 
   return {
     numRows,
     numCols,
-    stands,
-    // merchants,
+    merchantStands,
     squares,
   };
 };

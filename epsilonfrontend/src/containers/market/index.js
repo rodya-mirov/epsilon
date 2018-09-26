@@ -15,6 +15,8 @@ import {
   STAND_EMPTY_RESERVED,
 } from '../../modules/market/squares';
 
+import MarketSummary from './marketSummary';
+
 import './market.css';
 
 const makeSquareSymbol = ({ type, }) => {
@@ -96,7 +98,7 @@ MarketGrid.propTypes = {
   squares: squaresPropType,
 };
 
-const Market = ({ numRows, numCols, squares, }) => (
+const Market = ({ numRows, numCols, squares, merchants, }) => (
   <div className="container">
     <h1 className="mt-5">Buying and Selling</h1>
 
@@ -105,6 +107,7 @@ const Market = ({ numRows, numCols, squares, }) => (
     </p>
 
     <MarketGrid squares={squares} />
+    <MarketSummary merchants={merchants} />
   </div>
 );
 
@@ -112,6 +115,11 @@ Market.propTypes = {
   numRows: PropTypes.number,
   numCols: PropTypes.number,
   squares: squaresPropType,
+  merchants: ImmutablePropTypes.listOf(
+    PropTypes.shape({
+      state: String,
+    })
+  ),
 };
 
 const makeSquares = ({ squares, }) =>
@@ -121,6 +129,7 @@ const mapStateToProps = ({ market, }) => ({
   numRows: market.numRows,
   numCols: market.numCols,
   squares: makeSquares(market),
+  merchants: market.merchantStands,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
