@@ -20,3 +20,20 @@ export const makeArrayGrid = (rows, cols, makeElement = makeEmptyObject) =>
 
 export const arrayGridToImmutable = arrayGrid =>
   List(arrayGrid).map(row => List(row));
+
+// TODO unit tests
+export const toEnglishList = (strings, emptyListDescription = '') => {
+  const length = strings.length;
+
+  if (length === 0) {
+    return emptyListDescription;
+  } else if (length === 1) {
+    return strings[0];
+  } else if (length === 2) {
+    return `${strings[0]} and ${strings[1]}`;
+  } else {
+    return `${strings.slice(0, length - 1).join(', ')}, and ${
+      strings[length - 1]
+    }`;
+  }
+};

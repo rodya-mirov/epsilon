@@ -18,6 +18,7 @@ import {
 import MarketSummary from './marketSummary';
 
 import './market.css';
+import { merchantPropType, } from './propTypes';
 
 const makeSquareSymbol = ({ type, }) => {
   switch (type) {
@@ -58,6 +59,8 @@ const makeSquareClass = ({ type, }) => {
     throw new Error(`Unrecognized market square type ${type}`);
   }
 };
+
+// TODO: display customers in progress, accounting stuff
 
 const makeDisplaySquare = stateSquare => ({
   symbol: makeSquareSymbol(stateSquare),
@@ -115,11 +118,7 @@ Market.propTypes = {
   numRows: PropTypes.number,
   numCols: PropTypes.number,
   squares: squaresPropType,
-  merchants: ImmutablePropTypes.listOf(
-    PropTypes.shape({
-      state: String,
-    })
-  ),
+  merchants: ImmutablePropTypes.listOf(merchantPropType),
 };
 
 const makeSquares = ({ squares, }) =>

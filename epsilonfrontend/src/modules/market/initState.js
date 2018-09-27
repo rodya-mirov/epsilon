@@ -25,7 +25,7 @@ import { WAITING_FOR_CUSTOMER, getStateLength, } from './merchantState';
 // used for initialization
 const initNumRows = 20;
 const initNumCols = 30;
-const initNumStands = 8;
+const initNumStands = 12;
 
 // NB: don't change this probably?
 const STAND_DIMENSION = 3; // dimension (length and width) of the stand, including "owned space" but not including buffer between stands

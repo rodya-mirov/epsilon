@@ -1,16 +1,17 @@
 import React from 'react';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
 
 import { getMerchantDescription, } from '../../modules/market/merchantState';
+
+import { merchantPropType, } from './propTypes';
 
 const MerchantSummary = props => (
   <div>
     <ul>
       {props.merchants.map((merchant, ind) => (
         <li key={ind}>
-          Merchant {ind + 1} is {getMerchantDescription(merchant.state)}
+          Merchant {ind + 1} is {getMerchantDescription(merchant)}
         </li>
       ))}
     </ul>
@@ -18,11 +19,7 @@ const MerchantSummary = props => (
 );
 
 MerchantSummary.propTypes = {
-  merchants: ImmutablePropTypes.listOf(
-    PropTypes.shape({
-      state: String,
-    })
-  ),
+  merchants: ImmutablePropTypes.listOf(merchantPropType),
 };
 
 export default MerchantSummary;
