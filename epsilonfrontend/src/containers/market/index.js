@@ -29,6 +29,7 @@ import './market.css';
 import { merchantPropType, } from './propTypes';
 import { List, } from 'immutable';
 
+const PEDESTRIAN = 'PEDESTRIAN';
 const CUSTOMER_BARTERING = 'CUSTOMER_BARTERING';
 const ACCOUNTING_OBJECT = 'ACCOUNTING_OBJECT'; // visual noise for accounting
 
@@ -49,6 +50,7 @@ const makeSquareSymbol = ({ type, }) => {
     return 'm';
 
   case CUSTOMER_BARTERING:
+  case PEDESTRIAN:
     return 'c';
 
   case ACCOUNTING_OBJECT:
@@ -75,6 +77,9 @@ const makeSquareClass = ({ type, }) => {
 
   case CUSTOMER_BARTERING:
     return 'marketplot-customer-bartering';
+
+  case PEDESTRIAN:
+    return 'marketplot-pedestrian';
 
   case ACCOUNTING_OBJECT:
     return 'marketplot-accounting-object';
@@ -182,17 +187,22 @@ const makeSquareOverrides = ({ merchantStand, }) => {
   }
 };
 
-const makeSquares = ({ squares, merchantStands, }) => {
+const makeSquares = ({ squares, merchantStands, pedestrians, }) => {
   let simpleSquares = squares;
 
   for (const merchantStand of merchantStands) {
-    const squareOverrides = makeSquareOverrides({ merchantStand, });
-    for (const override of squareOverrides) {
+    for (const override of makeSquareOverrides({ merchantStand, })) {
       const { row: rowInd, col: colInd, square, } = override;
       simpleSquares = simpleSquares.update(rowInd, row =>
         row.update(colInd, () => square)
       );
     }
+  }
+
+  for (const { row: rowInd, col: colInd, } of pedestrians) {
+    simpleSquares = simpleSquares.update(rowInd, row =>
+      row.update(colInd, () => ({ type: PEDESTRIAN, }))
+    );
   }
 
   return simpleSquares.map(row => row.map(makeDisplaySquare));
@@ -203,6 +213,7 @@ const mapStateToProps = ({ market, }) => ({
   numCols: market.numCols,
   squares: makeSquares(market),
   merchantStands: market.merchantStands,
+  pedestrians: market.pedestrians,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);

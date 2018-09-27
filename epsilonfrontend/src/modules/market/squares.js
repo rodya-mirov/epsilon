@@ -8,6 +8,10 @@ export const HORIZONTAL_STAND = 'horizontalStand';
 export const CUSTOMER_PLACE = 'customerPlace';
 export const STAND_EMPTY_RESERVED = 'standEmptyReserved';
 
+export const isPassable = ({ type, }) => {
+  return type === EMPTY_SQUARE;
+};
+
 /* square makers */
 const makeSquare = type => ({ type, });
 

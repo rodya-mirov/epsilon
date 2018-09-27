@@ -5,10 +5,15 @@ export const WAITING_FOR_CUSTOMER = 'WAITING_FOR_CUSTOMER';
 export const BARTERING = 'BARTERING';
 export const ACCOUNTING = 'ACCOUNTING';
 
+export const EAST = 'EAST';
+export const WEST = 'WEST';
+export const NORTH = 'NORTH';
+export const SOUTH = 'SOUTH';
+
 const timeLeftMap = {
-  WAITING_FOR_CUSTOMER: 30,
-  BARTERING: 10,
-  ACCOUNTING: 20,
+  WAITING_FOR_CUSTOMER: 15,
+  BARTERING: 15,
+  ACCOUNTING: 10,
 };
 
 const descriptionMap = {

@@ -8,6 +8,8 @@ import {
   ACCOUNTING,
 } from '../../modules/market/merchantState';
 
+import { updatePedestrians, } from './pedestrians';
+
 const seedTransaction = {
   name: 'seeds',
   costs: { money: 1, },
@@ -120,4 +122,4 @@ const updateMerchants = state => {
   };
 };
 
-export const updateMarket = reduceReducers(updateMerchants);
+export const updateMarket = reduceReducers(updateMerchants, updatePedestrians);

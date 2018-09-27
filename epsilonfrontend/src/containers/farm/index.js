@@ -111,13 +111,13 @@ Farm.propTypes = {
 };
 
 const mapStateToProps = state => {
-  const { farm, } = state;
+  const { farm, ticks, } = state;
   return {
     numRows: farm.numRows,
     numCols: farm.numCols,
     squares: farm.squares,
     farmers: farm.farmers,
-    oddTick: farm.oddTick,
+    oddTick: ticks.ticks % 2 === 0,
   };
 };
 

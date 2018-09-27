@@ -90,7 +90,6 @@ const makeInitialState = rng => {
     numCols: initNumCols,
     squares: makeSquares(initNumRows, initNumCols, () => initialSquare(rng)),
     farmers: makeFarmers(initNumRows, initNumCols, initNumFarmers),
-    oddTick: false,
   };
 };
 

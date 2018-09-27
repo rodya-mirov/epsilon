@@ -20,16 +20,25 @@ import {
   RIGHT,
 } from './directions';
 
-import { WAITING_FOR_CUSTOMER, getStateLength, } from './merchantState';
+import {
+  WAITING_FOR_CUSTOMER,
+  getStateLength,
+  EAST,
+  WEST,
+  NORTH,
+  SOUTH,
+} from './merchantState';
 
 // used for initialization
 const initNumRows = 20;
 const initNumCols = 30;
 const initNumStands = 12;
+const initNumPedestrians = 30;
 
 // NB: don't change this probably?
 const STAND_DIMENSION = 3; // dimension (length and width) of the stand, including "owned space" but not including buffer between stands
-const STAND_BUFFER = 1;
+const STAND_BUFFER = 1; // number of empty spaces which must exist between stands
+const PEDESTRIAN_HISTORY_LENGTH = 10; // keep track of this many 'moves' per each pedestrian
 
 const makeRawTopStandSquares = () => {
   // everything starts off as empty
@@ -126,7 +135,7 @@ const makeRandomStandAt = (row, col, rng) => {
 const squareFits = ({ xmin, xmax, ymin, ymax, }, isOccupied) => {
   for (let y = ymin; y <= ymax; y++) {
     for (let x = xmin; x <= xmax; x++) {
-      if (isOccupied(y, x)) {
+      if (isOccupied({ row: y, col: x, })) {
         return false;
       }
     }
@@ -174,6 +183,9 @@ const makeRawStand = (numRows, numCols, isOccupied, rng) => {
   return { success: false, };
 };
 
+const touchesStand = ({ standSquares, }) => ({ row, col, }) =>
+  standSquares.some(square => row === square.row && col === square.col);
+
 const makeInitialStands = (numRows, numCols, numStands, rng) => {
   let allStands = List();
   let allStandSquares = List();
@@ -181,10 +193,7 @@ const makeInitialStands = (numRows, numCols, numStands, rng) => {
   for (let merchantInd = 0; merchantInd < numStands; merchantInd++) {
     // nail down allStandSquares to make eslint happy
     const existingStandSquares = allStandSquares;
-    const isOccupied = (row, col) =>
-      existingStandSquares.some(
-        square => row === square.row && col === square.col
-      );
+    const isOccupied = touchesStand({ standSquares: existingStandSquares, });
 
     const { stand, standSquares, success = true, } = makeRawStand(
       numRows,
@@ -226,6 +235,68 @@ const makeMerchantStand = (rawStand, rng) => {
 const makeMerchantStands = (rawStands, rng) =>
   rawStands.map(rawStand => makeMerchantStand(rawStand, rng));
 
+const randomPedHistory = ({ rng, }) => {
+  const arr = [];
+  for (let i = 0; i < PEDESTRIAN_HISTORY_LENGTH; i++) {
+    const r = rng();
+    if (r < 0.25) {
+      arr.push(NORTH);
+    } else if (r < 0.5) {
+      arr.push(SOUTH);
+    } else if (r < 0.75) {
+      arr.push(WEST);
+    } else {
+      arr.push(EAST);
+    }
+  }
+
+  return List(arr);
+};
+
+const makePedestrian = ({ numRows, numCols, isOccupied, rng, }) => {
+  let allowedSquares = [];
+
+  for (let row = 0; row < numRows; row++) {
+    for (let col = 0; col < numCols; col++) {
+      if (!isOccupied({ row, col, })) {
+        allowedSquares.push({ row, col, });
+      }
+    }
+  }
+
+  const length = allowedSquares.length;
+  if (length === 0) {
+    return undefined;
+  }
+
+  const index = Math.floor(rng() * length);
+  const { row, col, } = allowedSquares[index];
+  return {
+    history: randomPedHistory({ rng, }),
+    row,
+    col,
+  };
+};
+
+const makePedestrians = ({ numRows, numCols, standSquares, rng, }) => {
+  const baseIsOccupied = touchesStand({ standSquares, });
+  let pedestrians = List();
+
+  for (let pedInd = 0; pedInd < initNumPedestrians; pedInd++) {
+    const oldPed = pedestrians;
+    const isOccupied = ({ row, col, }) =>
+      baseIsOccupied({ row, col, }) ||
+      oldPed.some(ped => ped.row === row || ped.col === col);
+
+    const newPedestrian = makePedestrian({ numRows, numCols, isOccupied, rng, });
+    if (newPedestrian) {
+      pedestrians = pedestrians.push(newPedestrian);
+    }
+  }
+
+  return { pedestrians, };
+};
+
 export const makeInitialState = rng => {
   const numRows = initNumRows;
   const numCols = initNumCols;
@@ -238,11 +309,18 @@ export const makeInitialState = rng => {
 
   const merchantStands = makeMerchantStands(stands, rng);
   const { squares, } = makeSquares(numRows, numCols, standSquares);
+  const { pedestrians, } = makePedestrians({
+    numRows,
+    numCols,
+    standSquares,
+    rng,
+  });
 
   return {
     numRows,
     numCols,
     merchantStands,
     squares,
+    pedestrians,
   };
 };

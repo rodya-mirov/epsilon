@@ -1,4 +1,4 @@
-/* Container div surrounding the farm */
+/* Container div surrounding the market */
 div.market {
   display: inline-block;
   padding: 25px;
@@ -7,7 +7,7 @@ div.market {
   border: 1px solid black;
 }
 
-/* Table of the farm plots */
+/* Table of the market plots */
 table.market {
   font-family: "Courier New", Courier, monospace;
   text-align: center;
@@ -15,7 +15,7 @@ table.market {
   color: black;
 }
 
-/* Class for individual plots on the farm */
+/* Class for individual plots on the market */
 td.marketplot {
   width: 20px;
   height: 20px;
@@ -37,6 +37,10 @@ td.marketplot-stand {
 
 td.marketplot-customer-bartering {
   color: gold;
+}
+
+td.marketplot-pedestrian {
+  color: #ffaa80;
 }
 
 td.marketplot-accounting-object {

@@ -18,13 +18,7 @@ const updateFarmersReducer = state => ({
   ...updateFarmers({ farm: state.farm, resources: state.resources, }),
 });
 
-const updateOddTickReducer = farmOnly(farmState => ({
-  ...farmState,
-  oddTick: !farmState.oddTick,
-}));
-
 export const updateFarm = reduceReducers(
   updatedSquaresReducer,
-  updateFarmersReducer,
-  updateOddTickReducer
+  updateFarmersReducer
 );
