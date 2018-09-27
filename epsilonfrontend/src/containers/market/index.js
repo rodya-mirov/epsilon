@@ -15,10 +15,22 @@ import {
   STAND_EMPTY_RESERVED,
 } from '../../modules/market/squares';
 
+import {
+  BARTERING,
+  ACCOUNTING,
+  WAITING_FOR_CUSTOMER,
+  getCustomerPlace,
+  getAccountingObjectPlace,
+} from '../../modules/market/merchantState';
+
 import MarketSummary from './marketSummary';
 
 import './market.css';
 import { merchantPropType, } from './propTypes';
+import { List, } from 'immutable';
+
+const CUSTOMER_BARTERING = 'CUSTOMER_BARTERING';
+const ACCOUNTING_OBJECT = 'ACCOUNTING_OBJECT'; // visual noise for accounting
 
 const makeSquareSymbol = ({ type, }) => {
   switch (type) {
@@ -35,6 +47,12 @@ const makeSquareSymbol = ({ type, }) => {
 
   case MERCHANT_SQUARE:
     return 'm';
+
+  case CUSTOMER_BARTERING:
+    return 'c';
+
+  case ACCOUNTING_OBJECT:
+    return '&';
 
   default:
     throw new Error(`Unrecognized market square type ${type}`);
@@ -55,12 +73,16 @@ const makeSquareClass = ({ type, }) => {
   case MERCHANT_SQUARE:
     return 'marketplot-merchant';
 
+  case CUSTOMER_BARTERING:
+    return 'marketplot-customer-bartering';
+
+  case ACCOUNTING_OBJECT:
+    return 'marketplot-accounting-object';
+
   default:
     throw new Error(`Unrecognized market square type ${type}`);
   }
 };
-
-// TODO: display customers in progress, accounting stuff
 
 const makeDisplaySquare = stateSquare => ({
   symbol: makeSquareSymbol(stateSquare),
@@ -101,7 +123,7 @@ MarketGrid.propTypes = {
   squares: squaresPropType,
 };
 
-const Market = ({ numRows, numCols, squares, merchants, }) => (
+const Market = ({ numRows, numCols, squares, merchantStands, }) => (
   <div className="container">
     <h1 className="mt-5">Buying and Selling</h1>
 
@@ -110,7 +132,7 @@ const Market = ({ numRows, numCols, squares, merchants, }) => (
     </p>
 
     <MarketGrid squares={squares} />
-    <MarketSummary merchants={merchants} />
+    <MarketSummary merchants={merchantStands} />
   </div>
 );
 
@@ -118,17 +140,69 @@ Market.propTypes = {
   numRows: PropTypes.number,
   numCols: PropTypes.number,
   squares: squaresPropType,
-  merchants: ImmutablePropTypes.listOf(merchantPropType),
+  merchantStands: ImmutablePropTypes.listOf(merchantPropType),
 };
 
-const makeSquares = ({ squares, }) =>
-  squares.map(row => row.map(makeDisplaySquare));
+const barteringSquareOverrides = ({ merchantStand, }) => {
+  const { row, col, } = getCustomerPlace({ merchantStand, });
+
+  return List.of({
+    square: {
+      type: CUSTOMER_BARTERING,
+    },
+    row,
+    col,
+  });
+};
+
+const accountingSquareOverrides = ({ merchantStand, }) => {
+  const { row, col, } = getAccountingObjectPlace({ merchantStand, });
+  return List.of({
+    square: {
+      type: ACCOUNTING_OBJECT,
+    },
+    row,
+    col,
+  });
+};
+
+const makeSquareOverrides = ({ merchantStand, }) => {
+  switch (merchantStand.state) {
+  case BARTERING:
+    return barteringSquareOverrides({ merchantStand, });
+
+  case ACCOUNTING:
+    return accountingSquareOverrides({ merchantStand, });
+
+  case WAITING_FOR_CUSTOMER:
+    return List();
+
+  default:
+    throw new Error(`Unrecognized merchant state ${merchantStand.state}`);
+  }
+};
+
+const makeSquares = ({ squares, merchantStands, }) => {
+  let simpleSquares = squares;
+
+  for (const merchantStand of merchantStands) {
+    const squareOverrides = makeSquareOverrides({ merchantStand, });
+    for (const override of squareOverrides) {
+      const { row: rowInd, col: colInd, square, } = override;
+      simpleSquares = simpleSquares.update(rowInd, row =>
+        row.update(colInd, () => square)
+      );
+    }
+  }
+
+  return simpleSquares.map(row => row.map(makeDisplaySquare));
+};
 
 const mapStateToProps = ({ market, }) => ({
   numRows: market.numRows,
   numCols: market.numCols,
   squares: makeSquares(market),
-  merchants: market.merchantStands,
+  merchantStands: market.merchantStands,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);

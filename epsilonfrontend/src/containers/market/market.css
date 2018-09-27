@@ -34,3 +34,11 @@ td.marketplot-merchant {
 td.marketplot-stand {
   color: black;
 }
+
+td.marketplot-customer-bartering {
+  color: gold;
+}
+
+td.marketplot-accounting-object {
+  color: bisque;
+}
