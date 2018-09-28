@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 
 const transactionPropType = PropTypes.shape({
-  name: String,
+  name: PropTypes.string,
   costs: PropTypes.object,
   gains: PropTypes.object,
 });
 
 export const merchantPropType = PropTypes.shape({
-  state: String,
+  state: PropTypes.string,
   transaction: transactionPropType,
 });

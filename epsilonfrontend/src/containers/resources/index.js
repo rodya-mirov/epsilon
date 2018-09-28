@@ -6,6 +6,7 @@ import { bindActionCreators, } from 'redux';
 
 const ResourceSummary = props => (
   <div>
+    <h5>Available Resources</h5>
     <ul>
       <li>
         <b>Harvested Fruit: </b> {props.fruit}

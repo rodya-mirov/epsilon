@@ -15,6 +15,7 @@ import { farmerPropType, squarePropType, gridPropType, } from './propTypes';
 
 import './farm.css';
 import FarmerSummary from './farmerStates';
+import Wrapper from '../wrapper';
 
 const squareToAscii = state => {
   switch (state) {
@@ -80,6 +81,34 @@ const makeIsFarmer = (farmers, oddTick) => {
     farmers.some(farmer => farmer.row === row && farmer.col === col);
 };
 
+const WrappedFarm = ({
+  numRows,
+  numCols,
+  squares,
+  farmers,
+  oddTick,
+  hireFarmer,
+}) => {
+  const ParamGrid = () => (
+    <PlotGrid squares={squares} isFarmer={makeIsFarmer(farmers, oddTick)} />
+  );
+
+  const SummaryComponent = () => (
+    <div>
+      <FarmerSummary farmers={farmers} squares={squares} />
+      <button onClick={hireFarmer}>Hire Farmer</button>
+    </div>
+  );
+  return Wrapper({
+    headerProps: {
+      title: 'Farming is Repetitive',
+      message: `Welcome to your lovely ${numCols}x${numRows} farm`,
+    },
+    MainComponent: ParamGrid,
+    SummaryComponent,
+  });
+};
+
 const Farm = props => {
   return (
     <div className="container">
@@ -96,7 +125,6 @@ const Farm = props => {
       />
 
       <FarmerSummary farmers={props.farmers} squares={props.squares} />
-      <button onClick={props.hireFarmer}>Hire Farmer</button>
     </div>
   );
 };
@@ -132,4 +160,4 @@ const mapDispatchToProps = dispatch =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Farm);
+)(WrappedFarm);

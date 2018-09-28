@@ -1,9 +1,8 @@
 /* Container div surrounding the market */
 div.market {
-  display: inline-block;
+  display: block flex;
   padding: 25px;
-  align-content: center;
-  vertical-align: middle;
+  width: fit-content;
   border: 1px solid black;
 }
 

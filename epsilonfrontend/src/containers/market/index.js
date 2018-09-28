@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { List, } from 'immutable';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect, } from 'react-redux';
@@ -25,9 +25,11 @@ import {
 
 import MarketSummary from './marketSummary';
 
+import ResourceSummary from '../resources';
+
+import Wrapper from '../wrapper';
+
 import './market.css';
-import { merchantPropType, } from './propTypes';
-import { List, } from 'immutable';
 
 const PEDESTRIAN = 'PEDESTRIAN';
 const CUSTOMER_BARTERING = 'CUSTOMER_BARTERING';
@@ -105,7 +107,7 @@ const squaresPropType = ImmutablePropTypes.listOf(
 
 const MarketGrid = ({ squares, }) => (
   <div className="market rounded border">
-    <table className="farm rounded">
+    <table className="market rounded">
       <tbody>
         {squares.map((row, rowIndex) => (
           <tr key={rowIndex}>
@@ -128,24 +130,47 @@ MarketGrid.propTypes = {
   squares: squaresPropType,
 };
 
-const Market = ({ numRows, numCols, squares, merchantStands, }) => (
-  <div className="container">
-    <h1 className="mt-5">Buying and Selling</h1>
+const makeTitle = ({ numRows, numCols, }) => ({
+  title: 'Buying and Selling',
+  message: `Welcome to the ${numRows}x${numCols} public market`,
+});
 
-    <p>
-      Taking your goods to the {numRows}x{numCols} market.
-    </p>
+const WrappedMarket = ({ numRows, numCols, squares, }) => {
+  const ParamGrid = () => <MarketGrid squares={squares} />;
+  return Wrapper({
+    headerProps: makeTitle({ numRows, numCols, }),
+    MainComponent: ParamGrid,
+    SummaryComponent: MarketSummary,
+  });
+};
 
-    <MarketGrid squares={squares} />
-    <MarketSummary merchants={merchantStands} />
-  </div>
-);
+const Market = ({ numRows, numCols, squares, }) => {
+  const ParamGrid = () => <MarketGrid squares={squares} />;
+  return (
+    <div className="container">
+      <h1 className="mt-5">Buying and Selling</h1>
+
+      <p>
+        Taking your goods to the {numCols}x{numRows} market.
+      </p>
+
+      <div className="row">
+        <div className="col-lg-">
+          <ParamGrid />
+        </div>
+        <div className="col-lg-">
+          <ResourceSummary />
+          <MarketSummary />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 Market.propTypes = {
   numRows: PropTypes.number,
   numCols: PropTypes.number,
   squares: squaresPropType,
-  merchantStands: ImmutablePropTypes.listOf(merchantPropType),
 };
 
 const barteringSquareOverrides = ({ merchantStand, }) => {
@@ -212,8 +237,6 @@ const mapStateToProps = ({ market, }) => ({
   numRows: market.numRows,
   numCols: market.numCols,
   squares: makeSquares(market),
-  merchantStands: market.merchantStands,
-  pedestrians: market.pedestrians,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
@@ -221,4 +244,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Market);
+)(WrappedMarket);

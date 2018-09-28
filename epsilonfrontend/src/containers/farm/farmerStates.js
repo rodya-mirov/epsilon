@@ -6,7 +6,8 @@ import { getFarmerDescription, } from '../../modules/farm';
 import { farmerPropType, gridPropType, } from './propTypes';
 
 const FarmerSummary = props => (
-  <div className="container mt-2">
+  <div>
+    <h5>Farmer Activities</h5>
     <ul>
       {props.farmers.map((farmer, ind) => (
         <li key={ind}>
