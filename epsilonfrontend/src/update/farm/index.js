@@ -18,7 +18,10 @@ const updateFarmersReducer = state => ({
   ...updateFarmers({ farm: state.farm, resources: state.resources, }),
 });
 
-export const updateFarm = reduceReducers(
-  updatedSquaresReducer,
-  updateFarmersReducer
-);
+export const updateFarm = state => {
+  if (state.general.paused) {
+    return state;
+  }
+
+  return reduceReducers(updatedSquaresReducer, updateFarmersReducer)(state);
+};

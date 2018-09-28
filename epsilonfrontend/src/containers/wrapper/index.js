@@ -2,6 +2,7 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 import ResourcesSummary from '../resources';
+import PauseButton from '../pause';
 
 import classNames from 'classnames';
 
@@ -33,6 +34,8 @@ const Wrapper = ({ headerProps, MainComponent, SummaryComponent, }) => (
         </div>
       </div>
     </div>
+
+    <PauseButton />
   </div>
 );
 

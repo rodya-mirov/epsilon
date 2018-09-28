@@ -8,6 +8,6 @@ import { reduceReducers, } from 'redux-loop';
 import { updateFarm, } from './farm';
 import { updateMarket, } from './market';
 
-import { updateTicks, } from './ticks';
+import { updateGeneral, } from './general';
 
-export const updater = reduceReducers(updateFarm, updateMarket, updateTicks);
+export const updater = reduceReducers(updateFarm, updateMarket, updateGeneral);

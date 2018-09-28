@@ -109,13 +109,13 @@ const WrappedFarm = ({
 };
 
 const mapStateToProps = state => {
-  const { farm, ticks, } = state;
+  const { farm, general, } = state;
   return {
     numRows: farm.numRows,
     numCols: farm.numCols,
     squares: farm.squares,
     farmers: farm.farmers,
-    oddTick: ticks.ticks % 2 === 0,
+    oddTick: general.ticks % 2 === 0,
   };
 };
 

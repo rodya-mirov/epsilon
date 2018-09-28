@@ -122,4 +122,10 @@ const updateMerchants = state => {
   };
 };
 
-export const updateMarket = reduceReducers(updateMerchants, updatePedestrians);
+export const updateMarket = state => {
+  if (state.general.paused) {
+    return state;
+  }
+
+  return reduceReducers(updateMerchants, updatePedestrians)(state);
+};

@@ -100,8 +100,8 @@ const updatePedestrian = (pedestrian, isLegal, rng) => {
 
 export const updatePedestrians = state => {
   const { market, } = state;
-  const { ticks, } = state;
-  const rng = alea(String(ticks.ticks));
+  const { general, } = state;
+  const rng = alea(String(general.ticks));
 
   let pedestrians = market.pedestrians;
 
