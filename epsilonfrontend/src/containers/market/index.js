@@ -25,8 +25,6 @@ import {
 
 import MarketSummary from './marketSummary';
 
-import ResourceSummary from '../resources';
-
 import Wrapper from '../wrapper';
 
 import './market.css';
@@ -132,7 +130,7 @@ MarketGrid.propTypes = {
 
 const makeTitle = ({ numRows, numCols, }) => ({
   title: 'Buying and Selling',
-  message: `Welcome to the ${numRows}x${numCols} public market`,
+  message: `Welcome to the ${numCols}x${numRows} public market`,
 });
 
 const WrappedMarket = ({ numRows, numCols, squares, }) => {
@@ -142,35 +140,6 @@ const WrappedMarket = ({ numRows, numCols, squares, }) => {
     MainComponent: ParamGrid,
     SummaryComponent: MarketSummary,
   });
-};
-
-const Market = ({ numRows, numCols, squares, }) => {
-  const ParamGrid = () => <MarketGrid squares={squares} />;
-  return (
-    <div className="container">
-      <h1 className="mt-5">Buying and Selling</h1>
-
-      <p>
-        Taking your goods to the {numCols}x{numRows} market.
-      </p>
-
-      <div className="row">
-        <div className="col-lg-">
-          <ParamGrid />
-        </div>
-        <div className="col-lg-">
-          <ResourceSummary />
-          <MarketSummary />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-Market.propTypes = {
-  numRows: PropTypes.number,
-  numCols: PropTypes.number,
-  squares: squaresPropType,
 };
 
 const barteringSquareOverrides = ({ merchantStand, }) => {

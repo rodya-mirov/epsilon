@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import { bindActionCreators, } from 'redux';
 import { connect, } from 'react-redux';
 import classNames from 'classnames';
@@ -11,7 +10,7 @@ import {
   READY_FOR_HARVEST,
   hireFarmerAction,
 } from '../../modules/farm';
-import { farmerPropType, squarePropType, gridPropType, } from './propTypes';
+import { squarePropType, gridPropType, } from './propTypes';
 
 import './farm.css';
 import FarmerSummary from './farmerStates';
@@ -107,35 +106,6 @@ const WrappedFarm = ({
     MainComponent: ParamGrid,
     SummaryComponent,
   });
-};
-
-const Farm = props => {
-  return (
-    <div className="container">
-      <h1 className="mt-5">Farming is Repetitive</h1>
-
-      <p>
-        Welcome to your lovely {props.numCols.toString()}x
-        {props.numRows.toString()} farm.
-      </p>
-
-      <PlotGrid
-        squares={props.squares}
-        isFarmer={makeIsFarmer(props.farmers, props.oddTick)}
-      />
-
-      <FarmerSummary farmers={props.farmers} squares={props.squares} />
-    </div>
-  );
-};
-
-Farm.propTypes = {
-  numRows: PropTypes.number,
-  numCols: PropTypes.number,
-  squares: gridPropType,
-  farmers: ImmutablePropTypes.listOf(farmerPropType),
-  oddTick: PropTypes.bool,
-  hireFarmer: PropTypes.func,
 };
 
 const mapStateToProps = state => {
