@@ -21,11 +21,6 @@ const App = ({ farmActive, marketActive, }) => (
           <div className="container">
             <div className="collapse navbar-collapse" id="navbarResponsive">
               <ul className="navbar-nav mr-auto">
-                <li className="nav-item">
-                  <Link className="nav-link" to="/main">
-                    Main
-                  </Link>
-                </li>
                 {!farmActive ? (
                   ''
                 ) : (
@@ -44,15 +39,20 @@ const App = ({ farmActive, marketActive, }) => (
                     </Link>
                   </li>
                 )}
+                <li className="nav-item">
+                  <Link className="nav-link" to="/main">
+                    Main
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
         </nav>
 
         <main>
-          <Route exact path="/(main)?" component={MainMenu} />
           <Route exact path="/farm" component={Farm} />
           <Route exact path="/market" component={Market} />
+          <Route exact path="/(main)?" component={MainMenu} />
         </main>
       </div>
     </Router>
