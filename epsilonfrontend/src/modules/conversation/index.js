@@ -16,6 +16,7 @@ const MAIN_CONVERSATION_TYPE = 'MAIN_CONVERSATION_TYPE';
 
 export const SELF_SPEAKER = 'conversation/speaker/self';
 export const OTHER_SPEAKER = 'conversation/speaker/other';
+export const TUTORIAL = 'conversation/speaker/tutorial';
 
 const getConversation = conversationType => {
   switch (conversationType) {
@@ -81,6 +82,10 @@ const mainConversation = {
       speaker: OTHER_SPEAKER,
       advance: '(hang up)',
     }),
+    message({
+      text: 'You have unlocked the FARM! Check it out in the nav bar.',
+      speaker: TUTORIAL,
+    }),
   ],
 };
 
@@ -144,7 +149,7 @@ const startConversation = (state, conversationType) => {
   });
 };
 
-export const initialState = startConversation({}, MAIN_CONVERSATION_TYPE);
+export const initialState = notInConversation();
 
 export default (state = initialState, action) => {
   switch (action.type) {

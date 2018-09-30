@@ -9,6 +9,7 @@ import conversation, {
 } from './conversation';
 
 import update from './update';
+import loadSave from './loadSave';
 
 const combined = combineReducers({
   farm,
@@ -26,4 +27,4 @@ export const fullInitialState = {
   conversation: conversationInitialState,
 };
 
-export default reduceReducers(combined, update);
+export default reduceReducers(combined, update, loadSave);

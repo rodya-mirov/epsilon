@@ -5,7 +5,11 @@ import { connect, } from 'react-redux';
 import classNames from 'classnames';
 
 import { makeAdvanceConversationAction, } from '../../modules/conversation';
-import { SELF_SPEAKER, OTHER_SPEAKER, } from '../../modules/conversation';
+import {
+  SELF_SPEAKER,
+  OTHER_SPEAKER,
+  TUTORIAL,
+} from '../../modules/conversation';
 
 const msgPropType = PropTypes.shape({
   text: PropTypes.string,
@@ -19,6 +23,9 @@ const makeCssClass = ({ speaker, }) => {
 
   case OTHER_SPEAKER:
     return 'other';
+
+  case TUTORIAL:
+    return 'tutorial';
 
   default:
     throw new Error(`Unrecognized speaker ${speaker}`);
