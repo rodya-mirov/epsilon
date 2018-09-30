@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect, } from 'react-router-dom';
 import { List, } from 'immutable';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -133,7 +134,10 @@ const makeTitle = ({ numRows, numCols, }) => ({
   message: `Welcome to the ${numCols}x${numRows} public market`,
 });
 
-const WrappedMarket = ({ numRows, numCols, squares, }) => {
+const WrappedMarket = ({ numRows, numCols, squares, isActive, }) => {
+  if (!isActive) {
+    return <Redirect to="/" />;
+  }
   const ParamGrid = () => <MarketGrid squares={squares} />;
   return Wrapper({
     headerProps: makeTitle({ numRows, numCols, }),
@@ -206,6 +210,7 @@ const mapStateToProps = ({ market, }) => ({
   numRows: market.numRows,
   numCols: market.numCols,
   squares: makeSquares(market),
+  isActive: market.isActive,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);

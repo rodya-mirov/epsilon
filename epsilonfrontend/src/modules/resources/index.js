@@ -1,5 +1,5 @@
 export const initialState = {
-  fruit: 0,
+  limes: 0,
   seeds: 100,
   money: 50,
 };

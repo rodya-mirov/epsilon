@@ -16,13 +16,13 @@ const seedTransaction = {
   gains: { seeds: 1, },
 };
 
-const fruitTransaction = {
-  name: 'fruit',
-  costs: { fruit: 1, },
+const limeTransaction = {
+  name: 'limes',
+  costs: { limes: 1, },
   gains: { money: 5, },
 };
 
-const transactionPrecedence = [seedTransaction, fruitTransaction,];
+const transactionPrecedence = [seedTransaction, limeTransaction,];
 
 const canAfford = ({ resources, transaction, }) => {
   const { costs, } = transaction;
@@ -123,7 +123,7 @@ const updateMerchants = state => {
 };
 
 export const updateMarket = state => {
-  if (state.general.paused) {
+  if (state.general.paused || !state.market.isActive) {
     return state;
   }
 

@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "classnames": "^2.2.6",
+    "connected-react-router": "^4.5.0",
+    "history": "^4.7.2",
     "immutable": "^3.8.2",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",

@@ -19,7 +19,7 @@ const updateFarmersReducer = state => ({
 });
 
 export const updateFarm = state => {
-  if (state.general.paused) {
+  if (state.general.paused || !state.farm.isActive) {
     return state;
   }
 

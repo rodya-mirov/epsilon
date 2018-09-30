@@ -5,3 +5,7 @@ nav.lightblue-bg {
 nav.black-bg {
   background-color: black;
 }
+
+div.main {
+  width: 80%;
+}

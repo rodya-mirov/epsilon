@@ -74,7 +74,7 @@ const updateFarmer = (farmerIndex, farm, resources) => {
         if (desiredState === READY_FOR_HARVEST) {
           resources = {
             ...resources,
-            fruit: resources.fruit + 1,
+            limes: resources.limes + 1,
           };
         }
         if (desiredState === PLOWED) {

@@ -86,6 +86,7 @@ const initNumFarmers = 5;
 
 const makeInitialState = rng => {
   return {
+    isActive: false,
     numRows: initNumRows,
     numCols: initNumCols,
     squares: makeSquares(initNumRows, initNumCols, () => initialSquare(rng)),
@@ -95,7 +96,27 @@ const makeInitialState = rng => {
 
 export const initialState = makeInitialState(alea('farm rng seed'));
 
+const UNLOCK_FARM = 'farm/unlockFarm';
+
+export const unlockFarmAction = () => ({
+  type: UNLOCK_FARM,
+});
+
 export default (state = initialState, action) => {
+  const { isActive, } = state;
+  if (!isActive) {
+    switch (action.type) {
+    case UNLOCK_FARM:
+      return {
+        ...state,
+        isActive: true,
+      };
+
+    default:
+      return state;
+    }
+  }
+
   switch (action.type) {
   case HIRE_FARMER_ACTION_TYPE:
     return addFarmer(state);

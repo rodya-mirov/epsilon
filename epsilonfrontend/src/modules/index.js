@@ -4,6 +4,9 @@ import farm, { initialState as farmInitialState, } from './farm';
 import market, { initialState as marketInitialState, } from './market';
 import resources, { initialState as resourcesInitialState, } from './resources';
 import general, { initialState as generalInitialState, } from './general';
+import conversation, {
+  initialState as conversationInitialState,
+} from './conversation';
 
 import update from './update';
 
@@ -12,6 +15,7 @@ const combined = combineReducers({
   market,
   resources,
   general,
+  conversation,
 });
 
 export const fullInitialState = {
@@ -19,6 +23,7 @@ export const fullInitialState = {
   market: marketInitialState,
   resources: resourcesInitialState,
   general: generalInitialState,
+  conversation: conversationInitialState,
 };
 
 export default reduceReducers(combined, update);

@@ -9,7 +9,7 @@ const ResourceSummary = props => (
     <h5>Available Resources</h5>
     <ul>
       <li>
-        <b>Harvested Fruit: </b> {props.fruit}
+        <b>Harvested Limes: </b> {props.limes}
       </li>
       <li>
         <b>Available Seeds: </b> {props.seeds}
@@ -22,13 +22,13 @@ const ResourceSummary = props => (
 );
 
 ResourceSummary.propTypes = {
-  fruit: PropTypes.number,
+  limes: PropTypes.number,
   seeds: PropTypes.number,
   money: PropTypes.number,
 };
 
 const mapStateToProps = ({ resources, }) => ({
-  fruit: resources.fruit,
+  limes: resources.limes,
   seeds: resources.seeds,
   money: resources.money,
 });

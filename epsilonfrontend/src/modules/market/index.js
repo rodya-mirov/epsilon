@@ -10,7 +10,7 @@ import { makeInitialState, } from './initState';
  * -  Random people wandering around
  *
  * Periodically a person will approach one of your merchants and either
- * sell a seed or purchase a fruit (or whatever)
+ * sell a seed or purchase a lime (or whatever)
  */
 
 /**

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators, } from 'redux';
 import { connect, } from 'react-redux';
+import { Redirect, } from 'react-router-dom';
 import classNames from 'classnames';
 import {
   UNPLOWED,
@@ -87,7 +88,17 @@ const WrappedFarm = ({
   farmers,
   oddTick,
   hireFarmer,
+  isActive,
 }) => {
+  if (!isActive) {
+    return (
+      <div>
+        <p>Sup</p>
+        <Redirect to="/" />
+      </div>
+    );
+  }
+
   const ParamGrid = () => (
     <PlotGrid squares={squares} isFarmer={makeIsFarmer(farmers, oddTick)} />
   );
@@ -116,6 +127,7 @@ const mapStateToProps = state => {
     squares: farm.squares,
     farmers: farm.farmers,
     oddTick: general.ticks % 2 === 0,
+    isActive: farm.isActive,
   };
 };
 
