@@ -2,7 +2,6 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 import ResourcesSummary from '../resources';
-import PauseButton from '../pause';
 
 import classNames from 'classnames';
 
@@ -34,7 +33,6 @@ const Wrapper = ({
         </div>
         <div style={{ width: '25px', }} />
         <div>
-          <PauseButton />
           <ResourcesSummary />
           {UpgradeComponent ? <UpgradeComponent /> : ''}
           <SummaryComponent />

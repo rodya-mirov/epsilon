@@ -16,7 +16,7 @@ export const updateSquare = (rowInd, colInd, newSquare, farmState) => ({
 
 export const stateChange = ({ square, stateLengths, }) => {
   const nextState = getNextState(square.state);
-  const timeLeftInState = stateLengths[nextState];
+  const timeLeftInState = stateLengths[nextState] - 1;
   return {
     ...square,
     state: nextState,

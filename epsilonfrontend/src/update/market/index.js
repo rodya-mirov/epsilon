@@ -27,6 +27,10 @@ const limeTransaction = {
 const transactionPrecedence = ({ resources, }) => {
   const { [SEEDS]: seeds, [MONEY]: money, } = resources;
 
+  if (seeds >= 100) {
+    return [limeTransaction,];
+  }
+
   if (seeds < 10 || seeds < money / 5) {
     return [seedTransaction, limeTransaction,];
   }
@@ -77,7 +81,7 @@ const updateMerchantStand = ({ merchantStand, resources, stateLengths, }) => {
   const { state, timeLeftInState, } = merchantStand;
   if (timeLeftInState <= 0) {
     const newState = getNextState(state);
-    const newTimeLeftInState = stateLengths[newState];
+    const newTimeLeftInState = stateLengths[newState] - 1;
 
     const finisher = ({ transaction = undefined, resources, }) => {
       let finishedState = newState;
