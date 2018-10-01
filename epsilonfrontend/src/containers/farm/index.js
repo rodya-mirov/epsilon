@@ -10,12 +10,14 @@ import {
   PLANTED,
   READY_FOR_HARVEST,
   hireFarmerAction,
+  makeUpgrades,
 } from '../../modules/farm';
 import { squarePropType, gridPropType, } from './propTypes';
 
 import './farm.css';
 import FarmerSummary from './farmerStates';
 import Wrapper from '../wrapper';
+import UpgradeButtons from '../upgrades';
 
 const squareToAscii = state => {
   switch (state) {
@@ -89,6 +91,7 @@ const WrappedFarm = ({
   oddTick,
   hireFarmer,
   isActive,
+  upgrades,
 }) => {
   if (!isActive) {
     return (
@@ -103,6 +106,10 @@ const WrappedFarm = ({
     <PlotGrid squares={squares} isFarmer={makeIsFarmer(farmers, oddTick)} />
   );
 
+  const UpgradeComponent = () => (
+    <UpgradeButtons header={'Upgrade your Farm'} upgrades={upgrades} />
+  );
+
   const SummaryComponent = () => (
     <div>
       <FarmerSummary farmers={farmers} squares={squares} />
@@ -115,6 +122,7 @@ const WrappedFarm = ({
       message: `Welcome to your lovely ${numCols}x${numRows} farm`,
     },
     MainComponent: ParamGrid,
+    UpgradeComponent,
     SummaryComponent,
   });
 };
@@ -126,6 +134,7 @@ const mapStateToProps = state => {
     numCols: farm.numCols,
     squares: farm.squares,
     farmers: farm.farmers,
+    upgrades: makeUpgrades(farm),
     oddTick: general.ticks % 2 === 0,
     isActive: farm.isActive,
   };

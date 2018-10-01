@@ -5,6 +5,9 @@ import { makeContainsFarmers, } from './utils';
 
 import { alea, } from 'seedrandom';
 
+import { processFarmUpgrades, FARM_UPGRADE_ACTION, } from './upgrades';
+export { makeUpgrades, } from './upgrades';
+
 // largely arbitrary field state; deterministic "random" process from the input
 const initialFieldState = rng => {
   const random = rng();
@@ -126,12 +129,6 @@ export default (state = initialState, action) => {
         isActive: true,
       };
 
-    case UNLOCK_FARM_UPGRADES:
-      return {
-        ...state,
-        upgradesUnlocked: true,
-      };
-
     default:
       return state;
     }
@@ -140,6 +137,16 @@ export default (state = initialState, action) => {
   switch (action.type) {
   case HIRE_FARMER_ACTION_TYPE:
     return addFarmer(state);
+
+  case UNLOCK_FARM_UPGRADES:
+    return {
+      ...state,
+      upgradesUnlocked: true,
+    };
+
+  case FARM_UPGRADE_ACTION:
+    return processFarmUpgrades(state, action);
+
   default:
     return state;
   }

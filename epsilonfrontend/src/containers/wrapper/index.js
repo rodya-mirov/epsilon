@@ -18,7 +18,12 @@ Header.propTypes = {
   message: PropTypes.string.isRequired,
 };
 
-const Wrapper = ({ headerProps, MainComponent, SummaryComponent, }) => (
+const Wrapper = ({
+  headerProps,
+  MainComponent,
+  UpgradeComponent = undefined,
+  SummaryComponent,
+}) => (
   <div className="container">
     <Header {...headerProps} />
 
@@ -30,6 +35,7 @@ const Wrapper = ({ headerProps, MainComponent, SummaryComponent, }) => (
         <div style={{ width: '25px', }} />
         <div>
           <ResourcesSummary />
+          {UpgradeComponent ? <UpgradeComponent /> : ''}
           <SummaryComponent />
         </div>
       </div>
