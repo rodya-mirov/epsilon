@@ -9,13 +9,21 @@ const MainMenu = ({ newGame, debugSave, }) => (
     <h1 className="mt-5">Main Menu</h1>
     <p>Some things you can do</p>
 
-    <div className="rounded">
+    <div className="container">
       <div>
-        <button onClick={newGame}>New Game</button>
-      </div>
-      <div style={{ height: '10px', }} />
-      <div>
-        <button onClick={debugSave}>
+        <button
+          type="button"
+          className="btn btn-space btn-outline-primary"
+          onClick={newGame}
+        >
+          New Game
+        </button>
+        <br />
+        <button
+          type="button"
+          className="btn mt-3 btn-space btn-outline-primary"
+          onClick={debugSave}
+        >
           Load Saved State (Everything Unlocked)
         </button>
       </div>
