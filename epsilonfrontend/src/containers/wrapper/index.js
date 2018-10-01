@@ -34,14 +34,13 @@ const Wrapper = ({
         </div>
         <div style={{ width: '25px', }} />
         <div>
+          <PauseButton />
           <ResourcesSummary />
           {UpgradeComponent ? <UpgradeComponent /> : ''}
           <SummaryComponent />
         </div>
       </div>
     </div>
-
-    <PauseButton />
   </div>
 );
 

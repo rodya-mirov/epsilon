@@ -7,11 +7,9 @@ import { connect, } from 'react-redux';
 import { setPauseAction, } from '../../modules/general';
 
 const PauseButton = ({ paused, setPause, }) => (
-  <div>
-    <button onClick={() => setPause(!paused)}>
-      {paused ? 'Unpause' : 'Pause'}
-    </button>
-  </div>
+  <button onClick={() => setPause(!paused)}>
+    {paused ? 'Unpause' : 'Pause'}
+  </button>
 );
 
 PauseButton.propTypes = {

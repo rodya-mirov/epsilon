@@ -1,30 +1,27 @@
-import { READY_FOR_HARVEST, PLANTED, PLOWED, UNPLOWED, } from './plotState';
+import { WAITING_FOR_CUSTOMER, BARTERING, ACCOUNTING, } from './merchantState';
 import { MONEY, } from '../resources';
 import { makeTrySpendAction, } from '../resources';
 
 const defaultUpgradePower = 2;
 
 const upgradePowers = {
-  READY_FOR_HARVEST: 2,
-  UNPLOWED: 2,
-  PLOWED: 2,
-  PLANTED: 2,
+  [WAITING_FOR_CUSTOMER]: 2,
+  [BARTERING]: 2,
+  [ACCOUNTING]: 2,
 };
 
 const defaultUpgradeMultiplier = 10;
 
 const upgradeMultipliers = {
-  READY_FOR_HARVEST: 10,
-  UNPLOWED: 10,
-  PLOWED: 10,
-  PLANTED: 10,
+  [WAITING_FOR_CUSTOMER]: 10,
+  [BARTERING]: 10,
+  [ACCOUNTING]: 10,
 };
 
 const upgradeDescriptions = {
-  READY_FOR_HARVEST: 'Reduce harvest time',
-  UNPLOWED: 'Reduce plowing time',
-  PLOWED: 'Reduce planting time',
-  PLANTED: 'Reduce growing time',
+  [WAITING_FOR_CUSTOMER]: 'Reduce time between customers',
+  [BARTERING]: 'Reduce bartering time',
+  [ACCOUNTING]: 'Reduce accounting time',
 };
 
 const makeCost = ({ amount, unit, }) => ({ amount, unit, });
@@ -51,34 +48,7 @@ const tickGainCost = ({
   return Math.ceil(raisedGain * multiplier);
 };
 
-/*
-import { makeContainsFarmers, } from './utils';
-
-const anyFarmer = ({ numRows, numCols, farmers, }) => {
-  const isOccuppied = makeContainsFarmers(farmers);
-  for (let row = 0; row < numRows; row++) {
-    for (let col = 0; col < numCols; col++) {
-      if (!isOccuppied(row, col)) {
-        return makeFarmerAt(row, col);
-      }
-    }
-  }
-  return null;
-};
-
-// TODO: use this for hiring 
-const addFarmer = state => {
-  const newFarmer = anyFarmer(state);
-  return newFarmer == null
-    ? state
-    : {
-      ...state,
-      farmers: state.farmers.push(newFarmer),
-    };
-};
-*/
-
-export const FARM_UPGRADE_ACTION = 'farm/farmUpgradeAction';
+export const MARKET_UPGRADE_ACTION = 'market/marketUpgradeAction';
 
 // TODO: these functions seem tied together in an incoherent way
 const usualUpgrade = ({ oldTicks, costFunction, description, plotState, }) => {
@@ -89,7 +59,7 @@ const usualUpgrade = ({ oldTicks, costFunction, description, plotState, }) => {
   const moneyAmount = costFunction(oldTicks);
   const upgradeAction = makeTrySpendAction({
     cost: { [MONEY]: moneyAmount, },
-    successAction: { type: FARM_UPGRADE_ACTION, kind: plotState, amount: 1, },
+    successAction: { type: MARKET_UPGRADE_ACTION, kind: plotState, amount: 1, },
   });
 
   return makeUpgrade({
@@ -121,12 +91,11 @@ const changeStateLengths = ({ stateLengths, plotState, amount, }) => ({
   [plotState]: stateLengths[plotState] - amount,
 });
 
-export const processFarmUpgrades = (state, action) => {
+export const processMarketUpgrades = (state, action) => {
   switch (action.kind) {
-  case READY_FOR_HARVEST:
-  case PLANTED:
-  case PLOWED:
-  case UNPLOWED:
+  case BARTERING:
+  case WAITING_FOR_CUSTOMER:
+  case ACCOUNTING:
     return {
       ...state,
       stateLengths: changeStateLengths({
@@ -142,7 +111,7 @@ export const processFarmUpgrades = (state, action) => {
 };
 
 export const makeUpgrades = ({ stateLengths, }) => {
-  return [UNPLOWED, PLOWED, PLANTED, READY_FOR_HARVEST,].map(plotState =>
+  return [BARTERING, WAITING_FOR_CUSTOMER, ACCOUNTING,].map(plotState =>
     makeUpgradeItem({ plotState, stateLengths, })
   );
 };

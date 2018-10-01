@@ -30,9 +30,9 @@ import {
 } from './merchantState';
 
 // used for initialization
-const initNumRows = 20;
-const initNumCols = 30;
-const initNumStands = 12;
+const initNumRows = 15;
+const initNumCols = 20;
+const initNumStands = 6;
 const initNumPedestrians = 30;
 
 // NB: don't change this probably?
@@ -233,9 +233,7 @@ const makeMerchantStand = ({ rawStand, rng, stateLengths, }) => {
 };
 
 const makeMerchantStands = ({ rawStands, rng, stateLengths, }) =>
-  rawStands.map(rawStand =>
-    makeMerchantStand({ rawStand, rng, stateLengths, })
-  );
+  rawStands.map(rawStand => makeMerchantStand({ rawStand, rng, stateLengths, }));
 
 const randomPedHistory = ({ rng, }) => {
   const arr = [];

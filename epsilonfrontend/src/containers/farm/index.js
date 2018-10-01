@@ -9,7 +9,6 @@ import {
   PLOWED,
   PLANTED,
   READY_FOR_HARVEST,
-  hireFarmerAction,
   makeUpgrades,
 } from '../../modules/farm';
 import { squarePropType, gridPropType, } from './propTypes';
@@ -89,7 +88,6 @@ const WrappedFarm = ({
   squares,
   farmers,
   oddTick,
-  hireFarmer,
   isActive,
   upgrades,
 }) => {
@@ -111,10 +109,7 @@ const WrappedFarm = ({
   );
 
   const SummaryComponent = () => (
-    <div>
-      <FarmerSummary farmers={farmers} squares={squares} />
-      <button onClick={hireFarmer}>Hire Farmer</button>
-    </div>
+    <FarmerSummary farmers={farmers} squares={squares} />
   );
   return Wrapper({
     headerProps: {
@@ -140,13 +135,8 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      hireFarmer: () => hireFarmerAction(1),
-    },
-    dispatch
-  );
+// no actions yet
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 
 export default connect(
   mapStateToProps,

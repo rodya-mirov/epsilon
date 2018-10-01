@@ -27,8 +27,10 @@ import {
 import MarketSummary from './marketSummary';
 
 import Wrapper from '../wrapper';
+import UpgradeComponent from '../upgrades';
 
 import './market.css';
+import { makeUpgrades, } from '../../modules/market/upgrades';
 
 const PEDESTRIAN = 'PEDESTRIAN';
 const CUSTOMER_BARTERING = 'CUSTOMER_BARTERING';
@@ -134,14 +136,18 @@ const makeTitle = ({ numRows, numCols, }) => ({
   message: `Welcome to the ${numCols}x${numRows} public market`,
 });
 
-const WrappedMarket = ({ numRows, numCols, squares, isActive, }) => {
+const WrappedMarket = ({ numRows, numCols, squares, isActive, upgrades, }) => {
   if (!isActive) {
     return <Redirect to="/" />;
   }
   const ParamGrid = () => <MarketGrid squares={squares} />;
+  const MarketUpgrades = () => (
+    <UpgradeComponent header={'Upgrade your Merchants'} upgrades={upgrades} />
+  );
   return Wrapper({
     headerProps: makeTitle({ numRows, numCols, }),
     MainComponent: ParamGrid,
+    UpgradeComponent: MarketUpgrades,
     SummaryComponent: MarketSummary,
   });
 };
@@ -211,6 +217,7 @@ const mapStateToProps = ({ market, }) => ({
   numCols: market.numCols,
   squares: makeSquares(market),
   isActive: market.isActive,
+  upgrades: makeUpgrades(market),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);

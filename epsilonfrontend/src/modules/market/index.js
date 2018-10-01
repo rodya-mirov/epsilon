@@ -2,6 +2,8 @@ import { alea, } from 'seedrandom';
 
 import { makeInitialState, } from './initState';
 
+import { MARKET_UPGRADE_ACTION, processMarketUpgrades, } from './upgrades';
+
 /**
  * Description of the state & general actions associated to the market.
  *
@@ -45,12 +47,23 @@ export const unlockMarketAction = () => ({
 
 // currently no available actions
 export default (state = initialState, action) => {
+  const { isActive, } = state;
+  if (!isActive) {
+    switch (action.type) {
+    case UNLOCK_MARKET:
+      return {
+        ...state,
+        isActive: true,
+      };
+
+    default:
+      return state;
+    }
+  }
+
   switch (action.type) {
-  case UNLOCK_MARKET:
-    return {
-      ...state,
-      isActive: true,
-    };
+  case MARKET_UPGRADE_ACTION:
+    return processMarketUpgrades(state, action);
 
   default:
     return state;
