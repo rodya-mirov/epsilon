@@ -37,9 +37,21 @@ export const initialState = makeInitialState(
   alea('This is an rng seed for initializatio')
 );
 
+const UNLOCK_MARKET = 'market/unlockMarket';
+
+export const unlockMarketAction = () => ({
+  type: UNLOCK_MARKET,
+});
+
 // currently no available actions
 export default (state = initialState, action) => {
   switch (action.type) {
+  case UNLOCK_MARKET:
+    return {
+      ...state,
+      isActive: true,
+    };
+
   default:
     return state;
   }

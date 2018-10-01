@@ -20,6 +20,9 @@ const makeDebugSaveState = () => {
       ...market,
       isActive: true,
     },
+    progression: {
+      marketUnlockStarted: true,
+    },
   };
 };
 

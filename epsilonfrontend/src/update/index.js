@@ -9,5 +9,11 @@ import { updateFarm, } from './farm';
 import { updateMarket, } from './market';
 
 import { updateGeneral, } from './general';
+import { updateProgression, } from './progression';
 
-export const updater = reduceReducers(updateFarm, updateMarket, updateGeneral);
+export const updater = reduceReducers(
+  updateFarm,
+  updateMarket,
+  updateGeneral,
+  updateProgression
+);

@@ -322,5 +322,6 @@ export const makeInitialState = rng => {
     merchantStands,
     squares,
     pedestrians,
+    isActive: false,
   };
 };

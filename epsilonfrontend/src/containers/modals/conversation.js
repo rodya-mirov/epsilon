@@ -53,7 +53,10 @@ const ConversationModal = ({
           </p>
         ))}
 
-        <button onClick={advanceConversation}>
+        <button
+          onClick={advanceConversation}
+          className={classNames('nextMessage')}
+        >
           {messages[messages.length - 1].advance}
         </button>
       </div>

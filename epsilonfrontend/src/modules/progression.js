@@ -1,9 +1,8 @@
 export const initialState = {
-  limes: 0,
-  seeds: 40,
-  money: 50,
+  marketUnlockStarted: false,
 };
 
+// for now it's just a state, it has no associated actions
 export default (state = initialState, action) => {
   switch (action.type) {
   default:
