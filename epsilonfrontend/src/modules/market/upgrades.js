@@ -1,16 +1,11 @@
 import { WAITING_FOR_CUSTOMER, BARTERING, ACCOUNTING, } from './merchantState';
-import { MONEY, } from '../resources';
-import { makeTrySpendAction, } from '../resources';
-
-const defaultUpgradePower = 2;
+import { makeStateLengthUpgrade, } from '../../upgrades';
 
 const upgradePowers = {
   [WAITING_FOR_CUSTOMER]: 2,
   [BARTERING]: 2,
   [ACCOUNTING]: 2,
 };
-
-const defaultUpgradeMultiplier = 10;
 
 const upgradeMultipliers = {
   [WAITING_FOR_CUSTOMER]: 10,
@@ -24,85 +19,7 @@ const upgradeDescriptions = {
   [ACCOUNTING]: 'Reduce accounting time',
 };
 
-const makeCost = ({ amount, unit, }) => ({ amount, unit, });
-
-const moneyCosts = amount => [makeCost({ amount, unit: MONEY, }),];
-
-const makeUpgrade = ({
-  text,
-  oldState,
-  newState,
-  costs = [],
-  action = () => {},
-  disabled = false,
-}) => ({
-  text,
-  oldState,
-  newState,
-  costs,
-  action,
-  disabled,
-});
-
-const tickGainCost = ({
-  oldTicks,
-  upgradePower = defaultUpgradePower,
-  multiplier = defaultUpgradeMultiplier,
-}) => {
-  // TODO: this power is not what I want, it should be a power
-  // of number of times it's been upgraded
-  const percentGain = oldTicks / (oldTicks - 1);
-  const raisedGain = Math.pow(percentGain, upgradePower);
-  return Math.ceil(raisedGain * multiplier);
-};
-
 export const MARKET_UPGRADE_ACTION = 'market/marketUpgradeAction';
-
-// TODO: these functions seem tied together in an incoherent way
-const usualUpgrade = ({
-  oldTicks,
-  costFunction,
-  description,
-  plotState,
-  minValue = 1,
-}) => {
-  if (oldTicks <= minValue) {
-    return makeUpgrade({
-      text: description,
-      oldState: oldTicks,
-      disabled: true,
-    });
-  }
-
-  const moneyAmount = costFunction(oldTicks);
-  const upgradeAction = makeTrySpendAction({
-    cost: { [MONEY]: moneyAmount, },
-    successAction: { type: MARKET_UPGRADE_ACTION, kind: plotState, amount: 1, },
-  });
-
-  return makeUpgrade({
-    text: description,
-    oldState: oldTicks,
-    newState: oldTicks - 1,
-    costs: moneyCosts(moneyAmount),
-    action: dispatch => {
-      dispatch(upgradeAction);
-    },
-  });
-};
-
-const makeUpgradeItem = ({ plotState, stateLengths, }) =>
-  usualUpgrade({
-    description: upgradeDescriptions[plotState],
-    oldTicks: stateLengths[plotState],
-    costFunction: oldTicks =>
-      tickGainCost({
-        oldTicks,
-        multiplier: upgradeMultipliers[plotState] || defaultUpgradeMultiplier,
-        upgradePower: upgradePowers[plotState] || defaultUpgradePower,
-      }),
-    plotState,
-  });
 
 const changeStateLengths = ({ stateLengths, plotState, amount, }) => ({
   ...stateLengths,
@@ -128,8 +45,15 @@ export const processMarketUpgrades = (state, action) => {
   }
 };
 
+const upgradeMaker = makeStateLengthUpgrade({
+  upgradePowers,
+  upgradeMultipliers,
+  upgradeDescriptions,
+  upgradeActionType: MARKET_UPGRADE_ACTION,
+});
+
 export const makeUpgrades = ({ stateLengths, }) => {
-  return [BARTERING, WAITING_FOR_CUSTOMER, ACCOUNTING,].map(plotState =>
-    makeUpgradeItem({ plotState, stateLengths, })
+  return [BARTERING, WAITING_FOR_CUSTOMER, ACCOUNTING,].map(state =>
+    upgradeMaker({ state, stateLengths, })
   );
 };

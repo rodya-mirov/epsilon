@@ -1,8 +1,5 @@
 import { READY_FOR_HARVEST, PLANTED, PLOWED, UNPLOWED, } from './plotState';
-import { MONEY, } from '../resources';
-import { makeTrySpendAction, } from '../resources';
-
-const defaultUpgradePower = 2;
+import { makeStateLengthUpgrade, } from '../../upgrades';
 
 const upgradePowers = {
   READY_FOR_HARVEST: 2,
@@ -10,8 +7,6 @@ const upgradePowers = {
   PLOWED: 2,
   PLANTED: 2,
 };
-
-const defaultUpgradeMultiplier = 10;
 
 const upgradeMultipliers = {
   READY_FOR_HARVEST: 10,
@@ -27,39 +22,8 @@ const upgradeDescriptions = {
   PLANTED: 'Reduce growing time',
 };
 
-const makeCost = ({ amount, unit, }) => ({ amount, unit, });
-
-const moneyCosts = amount => [makeCost({ amount, unit: MONEY, }),];
-
-const makeUpgrade = ({
-  text,
-  oldState,
-  newState,
-  costs = [],
-  action = () => {},
-  disabled = false,
-}) => ({
-  text,
-  oldState,
-  newState,
-  costs,
-  action,
-  disabled,
-});
-
-const tickGainCost = ({
-  oldTicks,
-  upgradePower = defaultUpgradePower,
-  multiplier = defaultUpgradeMultiplier,
-}) => {
-  // TODO: this power is not what I want, it should be a power
-  // of number of times it's been upgraded
-  const percentGain = oldTicks / (oldTicks - 1);
-  const raisedGain = Math.pow(percentGain, upgradePower);
-  return Math.ceil(raisedGain * multiplier);
-};
-
 /*
+// TODO: use this for hiring
 import { makeContainsFarmers, } from './utils';
 
 const anyFarmer = ({ numRows, numCols, farmers, }) => {
@@ -88,52 +52,6 @@ const addFarmer = state => {
 
 export const FARM_UPGRADE_ACTION = 'farm/farmUpgradeAction';
 
-// TODO: these functions seem tied together in an incoherent way
-const usualUpgrade = ({
-  oldTicks,
-  costFunction,
-  description,
-  plotState,
-  minValue = 1,
-}) => {
-  if (oldTicks <= minValue) {
-    return makeUpgrade({
-      text: description,
-      oldState: oldTicks,
-      disabled: true,
-    });
-  }
-
-  const moneyAmount = costFunction(oldTicks);
-  const upgradeAction = makeTrySpendAction({
-    cost: { [MONEY]: moneyAmount, },
-    successAction: { type: FARM_UPGRADE_ACTION, kind: plotState, amount: 1, },
-  });
-
-  return makeUpgrade({
-    text: description,
-    oldState: oldTicks,
-    newState: oldTicks - 1,
-    costs: moneyCosts(moneyAmount),
-    action: dispatch => {
-      dispatch(upgradeAction);
-    },
-  });
-};
-
-const makeUpgradeItem = ({ plotState, stateLengths, }) =>
-  usualUpgrade({
-    description: upgradeDescriptions[plotState],
-    oldTicks: stateLengths[plotState],
-    costFunction: oldTicks =>
-      tickGainCost({
-        oldTicks,
-        multiplier: upgradeMultipliers[plotState] || defaultUpgradeMultiplier,
-        upgradePower: upgradePowers[plotState] || defaultUpgradePower,
-      }),
-    plotState,
-  });
-
 const changeStateLengths = ({ stateLengths, plotState, amount, }) => ({
   ...stateLengths,
   [plotState]: stateLengths[plotState] - amount,
@@ -159,8 +77,15 @@ export const processFarmUpgrades = (state, action) => {
   }
 };
 
+const upgradeMaker = makeStateLengthUpgrade({
+  upgradePowers,
+  upgradeMultipliers,
+  upgradeDescriptions,
+  upgradeActionType: FARM_UPGRADE_ACTION,
+});
+
 export const makeUpgrades = ({ stateLengths, }) => {
-  return [UNPLOWED, PLOWED, PLANTED, READY_FOR_HARVEST,].map(plotState =>
-    makeUpgradeItem({ plotState, stateLengths, })
+  return [UNPLOWED, PLOWED, PLANTED, READY_FOR_HARVEST,].map(state =>
+    upgradeMaker({ state, stateLengths, })
   );
 };
