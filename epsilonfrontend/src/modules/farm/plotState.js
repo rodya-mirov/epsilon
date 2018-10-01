@@ -15,7 +15,7 @@ export const getFarmerDescription = (farmer, plotState) => {
 };
 
 export const makeInitialStateLengths = () => ({
-  UNPLOWED: 8,
+  UNPLOWED: 18,
   PLOWED: 6,
   PLANTED: 60,
   READY_FOR_HARVEST: 6,

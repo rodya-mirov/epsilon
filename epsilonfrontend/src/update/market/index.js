@@ -1,10 +1,13 @@
 import { reduceReducers, } from 'redux-loop';
 import { List, } from 'immutable';
 
+import { SEEDS, MONEY, } from '../../modules/resources';
+
 import {
   getNextState,
   BARTERING,
   ACCOUNTING,
+  WAITING_FOR_CUSTOMER,
 } from '../../modules/market/merchantState';
 
 import { updatePedestrians, } from './pedestrians';
@@ -21,7 +24,15 @@ const limeTransaction = {
   gains: { money: 5, },
 };
 
-const transactionPrecedence = [seedTransaction, limeTransaction,];
+const transactionPrecedence = ({ resources, }) => {
+  const { [SEEDS]: seeds, [MONEY]: money, } = resources;
+
+  if (seeds < 10 || seeds < money / 5) {
+    return [seedTransaction, limeTransaction,];
+  }
+
+  return [limeTransaction, seedTransaction,];
+};
 
 const canAfford = ({ resources, transaction, }) => {
   const { costs, } = transaction;
@@ -46,7 +57,7 @@ const applyGains = ({ transaction, resources, }) =>
   applyChange({ change: transaction.gains, resources, });
 
 const startTransaction = ({ resources, }) => {
-  for (const transaction of transactionPrecedence) {
+  for (const transaction of transactionPrecedence({ resources, })) {
     if (canAfford({ resources, transaction, })) {
       return {
         transaction,
@@ -68,15 +79,21 @@ const updateMerchantStand = ({ merchantStand, resources, stateLengths, }) => {
     const newState = getNextState(state);
     const newTimeLeftInState = stateLengths[newState];
 
-    const finisher = ({ transaction = undefined, resources, }) => ({
-      resources,
-      merchantStand: {
-        ...merchantStand,
-        state: newState,
-        timeLeftInState: newTimeLeftInState,
-        transaction: transaction,
-      },
-    });
+    const finisher = ({ transaction = undefined, resources, }) => {
+      let finishedState = newState;
+      if (newState === BARTERING && !transaction) {
+        finishedState = WAITING_FOR_CUSTOMER;
+      }
+      return {
+        resources,
+        merchantStand: {
+          ...merchantStand,
+          state: finishedState,
+          timeLeftInState: newTimeLeftInState,
+          transaction: transaction,
+        },
+      };
+    };
 
     if (newState === BARTERING) {
       return finisher(startTransaction({ resources, }));

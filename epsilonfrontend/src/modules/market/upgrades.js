@@ -28,12 +28,20 @@ const makeCost = ({ amount, unit, }) => ({ amount, unit, });
 
 const moneyCosts = amount => [makeCost({ amount, unit: MONEY, }),];
 
-const makeUpgrade = ({ text, oldState, newState, costs, action, }) => ({
+const makeUpgrade = ({
+  text,
+  oldState,
+  newState,
+  costs = [],
+  action = () => {},
+  disabled = false,
+}) => ({
   text,
   oldState,
   newState,
   costs,
   action,
+  disabled,
 });
 
 const tickGainCost = ({
@@ -51,9 +59,19 @@ const tickGainCost = ({
 export const MARKET_UPGRADE_ACTION = 'market/marketUpgradeAction';
 
 // TODO: these functions seem tied together in an incoherent way
-const usualUpgrade = ({ oldTicks, costFunction, description, plotState, }) => {
-  if (oldTicks <= 1) {
-    return undefined; // TODO something else (disabled button?)
+const usualUpgrade = ({
+  oldTicks,
+  costFunction,
+  description,
+  plotState,
+  minValue = 1,
+}) => {
+  if (oldTicks <= minValue) {
+    return makeUpgrade({
+      text: description,
+      oldState: oldTicks,
+      disabled: true,
+    });
   }
 
   const moneyAmount = costFunction(oldTicks);

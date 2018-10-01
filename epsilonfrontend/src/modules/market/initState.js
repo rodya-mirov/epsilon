@@ -32,7 +32,7 @@ import {
 // used for initialization
 const initNumRows = 15;
 const initNumCols = 20;
-const initNumStands = 6;
+const initNumStands = 8;
 const initNumPedestrians = 30;
 
 // NB: don't change this probably?

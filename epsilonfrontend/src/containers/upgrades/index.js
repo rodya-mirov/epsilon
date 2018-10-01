@@ -14,8 +14,10 @@ const RawUpgradeButton = ({
   action,
   disabled,
 }) => {
-  return (
-    <button onClick={action} className={disabled ? 'disabled' : ''}>
+  return disabled ? (
+    <button disabled={true}>{`${text}: ${oldState} (Complete)`}</button>
+  ) : (
+    <button onClick={action}>
       {`${text}: ${oldState} => ${newState} for ${toEnglishList(
         costs.map(niceCost)
       )}`}
