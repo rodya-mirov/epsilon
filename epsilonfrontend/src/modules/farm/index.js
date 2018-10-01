@@ -1,6 +1,6 @@
 import { List, } from 'immutable';
 import { UNPLOWED, PLOWED, PLANTED, READY_FOR_HARVEST, } from './plotState';
-import { getStateLength, } from '../../update/farm/plotState';
+import { makeInitialStateLengths, } from './plotState';
 import { makeContainsFarmers, } from './utils';
 
 import { alea, } from 'seedrandom';
@@ -19,14 +19,18 @@ const initialFieldState = rng => {
   }
 };
 
-const initialTimeLeftInState = (state, rng) => {
+const initialTimeLeftInState = ({ state, rng, stateLengths, }) => {
   const random = rng();
-  return Math.floor(random * getStateLength(state));
+  return Math.floor(random * stateLengths[state]);
 };
 
-const initialSquare = rng => {
+const initialSquare = ({ rng, stateLengths, }) => {
   const state = initialFieldState(rng);
-  const timeLeftInState = initialTimeLeftInState(state, rng);
+  const timeLeftInState = initialTimeLeftInState({
+    state,
+    rng,
+    stateLengths,
+  });
   return { state, timeLeftInState, };
 };
 
@@ -85,21 +89,31 @@ const initNumCols = 10;
 const initNumFarmers = 5;
 
 const makeInitialState = rng => {
+  const stateLengths = makeInitialStateLengths();
   return {
     isActive: false,
+    upgradesUnlocked: false,
     numRows: initNumRows,
     numCols: initNumCols,
-    squares: makeSquares(initNumRows, initNumCols, () => initialSquare(rng)),
+    squares: makeSquares(initNumRows, initNumCols, () =>
+      initialSquare({ rng, stateLengths, })
+    ),
     farmers: makeFarmers(initNumRows, initNumCols, initNumFarmers),
+    stateLengths,
   };
 };
 
 export const initialState = makeInitialState(alea('farm rng seed'));
 
+const UNLOCK_FARM_UPGRADES = 'farm/unlockFarmUpgrades';
 const UNLOCK_FARM = 'farm/unlockFarm';
 
 export const unlockFarmAction = () => ({
   type: UNLOCK_FARM,
+});
+
+export const unlockFarmUpgradesAction = () => ({
+  type: UNLOCK_FARM_UPGRADES,
 });
 
 export default (state = initialState, action) => {
@@ -110,6 +124,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isActive: true,
+      };
+
+    case UNLOCK_FARM_UPGRADES:
+      return {
+        ...state,
+        upgradesUnlocked: true,
       };
 
     default:

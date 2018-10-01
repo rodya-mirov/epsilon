@@ -1,4 +1,4 @@
-import { getNextState, getStateLength, } from './plotState';
+import { getNextState, } from './plotState';
 
 /**
  * Given a farm state, replace the square at the given coordinates with the given new square
@@ -14,11 +14,12 @@ export const updateSquare = (rowInd, colInd, newSquare, farmState) => ({
   ),
 });
 
-export const stateChange = square => {
+export const stateChange = ({ square, stateLengths, }) => {
   const nextState = getNextState(square.state);
+  const timeLeftInState = stateLengths[nextState];
   return {
     ...square,
     state: nextState,
-    timeLeftInState: getStateLength(nextState),
+    timeLeftInState,
   };
 };

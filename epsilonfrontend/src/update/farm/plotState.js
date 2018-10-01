@@ -5,14 +5,6 @@ import {
   READY_FOR_HARVEST,
 } from '../../modules/farm/plotState';
 
-// duration of each state (how many ticks to move it to next)
-const StateLength = {
-  UNPLOWED: 8,
-  PLOWED: 6,
-  PLANTED: 60,
-  READY_FOR_HARVEST: 6,
-};
-
 // whether or not a plot requires work to advance
 const RequiresWork = {
   UNPLOWED: true,
@@ -21,7 +13,7 @@ const RequiresWork = {
   READY_FOR_HARVEST: true,
 };
 
-// which state you move to next
+// which state a plot transitions to
 const NextState = {
   UNPLOWED: PLOWED,
   PLOWED: PLANTED,
@@ -30,5 +22,4 @@ const NextState = {
 };
 
 export const getRequiresWork = plotState => RequiresWork[plotState];
-export const getStateLength = plotState => StateLength[plotState];
 export const getNextState = plotState => NextState[plotState];

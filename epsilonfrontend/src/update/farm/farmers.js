@@ -6,7 +6,7 @@ import {
 } from '../../modules/farm/plotState';
 import { updateSquare, stateChange, } from './utils';
 
-// NB: PLANTED is not useful because it does not require work
+// NB: farmers do not go to PLANTED plots because they do not require work
 const keyPrecedence = [READY_FOR_HARVEST, PLOWED, UNPLOWED,];
 
 const workingFarmer = (farmer, row, col) => ({
@@ -32,6 +32,8 @@ const requiresSeed = square =>
   square.state === PLOWED && square.timeLeftInState <= 0;
 
 const updateFarmer = (farmerIndex, farm, resources) => {
+  const { stateLengths, } = farm;
+
   const hasSeed = resources.seeds >= 1;
   const myFarmer = farm.farmers.get(farmerIndex);
   const otherFarmers = farm.farmers.remove(farmerIndex);
@@ -83,7 +85,12 @@ const updateFarmer = (farmerIndex, farm, resources) => {
             seeds: resources.seeds - 1,
           };
         }
-        farm = updateSquare(rowIndex, colIndex, stateChange(square), farm);
+        farm = updateSquare(
+          rowIndex,
+          colIndex,
+          stateChange({ square, stateLengths, }),
+          farm
+        );
         return {
           resources,
           farm,

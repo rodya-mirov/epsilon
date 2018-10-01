@@ -3,7 +3,6 @@ import { List, } from 'immutable';
 
 import {
   getNextState,
-  getStateLength,
   BARTERING,
   ACCOUNTING,
 } from '../../modules/market/merchantState';
@@ -63,11 +62,11 @@ const finishTransaction = ({ transaction, resources, }) => ({
   resources: applyGains({ transaction, resources, }),
 });
 
-const updateMerchantStand = (merchantStand, resources) => {
+const updateMerchantStand = ({ merchantStand, resources, stateLengths, }) => {
   const { state, timeLeftInState, } = merchantStand;
   if (timeLeftInState <= 0) {
     const newState = getNextState(state);
-    const newTimeLeftInState = getStateLength(newState);
+    const newTimeLeftInState = stateLengths[newState];
 
     const finisher = ({ transaction = undefined, resources, }) => ({
       resources,
@@ -102,12 +101,17 @@ const updateMerchantStand = (merchantStand, resources) => {
 
 const updateMerchants = state => {
   const { market: oldMarket, resources: oldResources, } = state;
+  const { stateLengths, } = oldMarket;
 
   let merchantStands = List();
   let resources = oldResources;
 
   for (const merchantStand of oldMarket.merchantStands) {
-    const updated = updateMerchantStand(merchantStand, resources);
+    const updated = updateMerchantStand({
+      merchantStand,
+      resources,
+      stateLengths,
+    });
     merchantStands = merchantStands.push(updated.merchantStand);
     resources = updated.resources;
   }

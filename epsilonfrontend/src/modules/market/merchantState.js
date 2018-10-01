@@ -10,11 +10,11 @@ export const WEST = 'WEST';
 export const NORTH = 'NORTH';
 export const SOUTH = 'SOUTH';
 
-const timeLeftMap = {
+export const makeStateLengths = () => ({
   WAITING_FOR_CUSTOMER: 15,
   BARTERING: 15,
   ACCOUNTING: 10,
-};
+});
 
 const descriptionMap = {
   WAITING_FOR_CUSTOMER: 'waiting for a customer to arrive',
@@ -68,8 +68,6 @@ export const getMerchantDescription = merchant => {
     return simpleMerchantDescription(state);
   }
 };
-
-export const getStateLength = mapToFunc(timeLeftMap, 'length of state');
 
 export const getNextState = mapToFunc(nextStateMap, 'next state');
 

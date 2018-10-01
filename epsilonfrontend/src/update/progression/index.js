@@ -10,8 +10,6 @@ const checkForMarketUnlock = state => {
   }
 
   if (resources.seeds <= 0) {
-    console.log('Seeds are empty! Send it on!');
-
     return loop(
       {
         ...state,

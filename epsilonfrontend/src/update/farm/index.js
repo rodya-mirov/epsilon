@@ -10,7 +10,11 @@ const farmOnly = farmReducer => state => ({
 
 const updatedSquaresReducer = farmOnly(farmState => ({
   ...farmState,
-  squares: farmState.squares.map(row => row.map(updatePlot)),
+  squares: farmState.squares.map(row =>
+    row.map(plot =>
+      updatePlot({ square: plot, stateLengths: farmState.stateLengths, })
+    )
+  ),
 }));
 
 const updateFarmersReducer = state => ({

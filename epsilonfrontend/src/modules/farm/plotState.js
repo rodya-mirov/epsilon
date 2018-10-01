@@ -13,3 +13,10 @@ const farmerAction = {
 export const getFarmerDescription = (farmer, plotState) => {
   return farmer.working ? farmerAction[plotState] : 'bored';
 };
+
+export const makeInitialStateLengths = () => ({
+  UNPLOWED: 8,
+  PLOWED: 6,
+  PLANTED: 60,
+  READY_FOR_HARVEST: 6,
+});

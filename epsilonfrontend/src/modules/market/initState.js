@@ -22,7 +22,7 @@ import {
 
 import {
   WAITING_FOR_CUSTOMER,
-  getStateLength,
+  makeStateLengths,
   EAST,
   WEST,
   NORTH,
@@ -222,9 +222,9 @@ const makeSquares = (numRows, numCols, standSquares) => {
   };
 };
 
-const makeMerchantStand = (rawStand, rng) => {
+const makeMerchantStand = ({ rawStand, rng, stateLengths, }) => {
   const state = WAITING_FOR_CUSTOMER;
-  const timeLeftInState = Math.floor(getStateLength(state) * rng());
+  const timeLeftInState = Math.floor(stateLengths[state] * rng());
   return {
     rawStand,
     state,
@@ -232,8 +232,10 @@ const makeMerchantStand = (rawStand, rng) => {
   };
 };
 
-const makeMerchantStands = (rawStands, rng) =>
-  rawStands.map(rawStand => makeMerchantStand(rawStand, rng));
+const makeMerchantStands = ({ rawStands, rng, stateLengths, }) =>
+  rawStands.map(rawStand =>
+    makeMerchantStand({ rawStand, rng, stateLengths, })
+  );
 
 const randomPedHistory = ({ rng, }) => {
   const arr = [];
@@ -298,6 +300,8 @@ const makePedestrians = ({ numRows, numCols, standSquares, rng, }) => {
 };
 
 export const makeInitialState = rng => {
+  const stateLengths = makeStateLengths();
+
   const numRows = initNumRows;
   const numCols = initNumCols;
   const { stands, standSquares, } = makeInitialStands(
@@ -307,7 +311,11 @@ export const makeInitialState = rng => {
     rng
   );
 
-  const merchantStands = makeMerchantStands(stands, rng);
+  const merchantStands = makeMerchantStands({
+    rawStands: stands,
+    rng,
+    stateLengths,
+  });
   const { squares, } = makeSquares(numRows, numCols, standSquares);
   const { pedestrians, } = makePedestrians({
     numRows,
@@ -317,6 +325,7 @@ export const makeInitialState = rng => {
   });
 
   return {
+    stateLengths,
     numRows,
     numCols,
     merchantStands,
