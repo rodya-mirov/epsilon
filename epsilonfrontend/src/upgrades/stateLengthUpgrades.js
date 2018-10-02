@@ -1,6 +1,5 @@
 import { makeTrySpendAction, MONEY, } from '../modules/resources';
-
-const makeCost = ({ amount, unit, }) => ({ amount, unit, });
+import { makeCost, makeUpgrade, } from './utils';
 
 const moneyCosts = amount => [makeCost({ amount, unit: MONEY, }),];
 
@@ -11,22 +10,6 @@ const tickGainCost = ({ oldLength, multiplier, upgradePower, }) => {
   const raisedGain = Math.pow(percentGain, upgradePower);
   return Math.ceil(raisedGain * multiplier);
 };
-
-const makeUpgrade = ({
-  text,
-  oldState,
-  newState,
-  costs = [],
-  action = () => {},
-  disabled = false,
-}) => ({
-  text,
-  oldState,
-  newState,
-  costs,
-  action,
-  disabled,
-});
 
 // TODO: these functions seem tied together in an incoherent way
 const usualUpgrade = ({

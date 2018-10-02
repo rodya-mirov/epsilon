@@ -7,6 +7,7 @@ const LOAD_SAVE = 'loadSave/loadSave';
 
 const NEW_GAME = 'general/newGame';
 const DEBUG_SAVE = 'general/debugSave';
+const RICH_SAVE = 'general/richSave';
 
 const makeDebugSaveState = () => {
   const { farm, market, } = fullInitialState;
@@ -26,6 +27,17 @@ const makeDebugSaveState = () => {
   };
 };
 
+const makeRichSaveState = () => {
+  const debug = makeDebugSaveState();
+  return {
+    ...debug,
+    resources: {
+      ...debug.resources,
+      money: 10000,
+    },
+  };
+};
+
 export const startNewGame = () => ({
   type: LOAD_SAVE,
   save: NEW_GAME,
@@ -36,6 +48,11 @@ export const loadDebugSave = () => ({
   save: DEBUG_SAVE,
 });
 
+export const loadRichSave = () => ({
+  type: LOAD_SAVE,
+  save: RICH_SAVE,
+});
+
 const loadSave = save => {
   switch (save) {
   case NEW_GAME:
@@ -43,6 +60,9 @@ const loadSave = save => {
 
   case DEBUG_SAVE:
     return makeDebugSaveState();
+
+  case RICH_SAVE:
+    return makeRichSaveState();
 
   default:
     throw new Error(`Unrecoginized save state name ${save}`);

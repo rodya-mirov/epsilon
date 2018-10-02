@@ -4,6 +4,7 @@ import { makeInitialStateLengths, } from './plotState';
 
 import { alea, } from 'seedrandom';
 
+import { makeFarmerAt, } from './utils';
 import { processFarmUpgrades, FARM_UPGRADE_ACTION, } from './upgrades';
 export { makeUpgrades, } from './upgrades';
 
@@ -42,12 +43,6 @@ const makeSquares = (numRows, numCols, squareGen) =>
   List(Array(numRows).keys()).map(() =>
     List(Array(numCols).keys()).map(() => squareGen())
   );
-
-const makeFarmerAt = (row, col) => ({
-  row,
-  col,
-  working: false,
-});
 
 // makes initial farmers
 const makeFarmers = (numRows, numCols, numFarmers) => {
