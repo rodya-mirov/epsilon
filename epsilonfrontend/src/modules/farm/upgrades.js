@@ -4,8 +4,15 @@ import { makeFarmerAt, } from './utils';
 import { makeStateLengthUpgrade, } from '../../upgrades';
 import { makeUpgrade, makeCost, } from '../../upgrades/utils';
 import { MONEY, makeTrySpendAction, } from '../resources';
+import { arrayGridToImmutable, makeArrayGrid, } from '../../utils';
+
+const MAX_NUM_COLS = 20;
+const MAX_NUM_ROWS = 20;
+
+export const FARM_UPGRADE_ACTION = 'farm/farmUpgradeAction';
 
 const HIRE_FARMER = 'farm/upgrades/HIRE_FARMER';
+const ENLARGE_FARM = 'farm/upgrades/ENLARGE_FARM';
 
 const upgradePowers = {
   READY_FOR_HARVEST: 2,
@@ -28,6 +35,68 @@ const upgradeDescriptions = {
   PLANTED: 'Reduce growing time',
 };
 
+const makeFieldUpgrade = ({ numRows, numCols, }) => {
+  const sizeString = (rows, cols) => `${rows}x${cols}`;
+
+  const newNumRows = numRows >= MAX_NUM_ROWS ? numRows : numRows + 1;
+  const newNumCols = numCols >= MAX_NUM_COLS ? numCols : numCols + 1;
+
+  if (newNumRows === numRows && newNumCols === numCols) {
+    return makeUpgrade({
+      text: 'Enlarge your field',
+      oldState: sizeString(numRows, numCols),
+      disabled: true,
+    });
+  }
+
+  const upgradeCost = 12 * (newNumRows * newNumCols - numRows * numCols);
+
+  return makeUpgrade({
+    text: 'Enlarge your field',
+    oldState: sizeString(numRows, numCols),
+    newState: sizeString(newNumRows, newNumCols),
+    costs: [makeCost({ amount: upgradeCost, unit: MONEY, }),],
+    action: dispatch =>
+      dispatch(
+        makeTrySpendAction({
+          cost: { [MONEY]: upgradeCost, },
+          successAction: {
+            type: FARM_UPGRADE_ACTION,
+            kind: ENLARGE_FARM,
+            newSize: { numRows: newNumRows, numCols: newNumCols, },
+          },
+        })
+      ),
+  });
+};
+
+const enlargeFarm = ({ state, newSize, }) => {
+  const { numRows: newNumRows, numCols: newNumCols, } = newSize;
+  const {
+    squares: oldSquares,
+    numRows: oldNumRows,
+    numCols: oldNumCols,
+    stateLengths,
+  } = state;
+
+  const makeSquare = (rowInd, colInd) => {
+    if (rowInd < oldNumRows && colInd < oldNumCols) {
+      return oldSquares.get(rowInd).get(colInd);
+    }
+
+    return { state: UNPLOWED, timeLeftInState: stateLengths[UNPLOWED], };
+  };
+
+  return {
+    ...state,
+    squares: arrayGridToImmutable(
+      makeArrayGrid(newNumRows, newNumCols, makeSquare)
+    ),
+    numRows: newNumRows,
+    numCols: newNumCols,
+  };
+};
+
 const addFarmer = ({ state, toAdd = 1, }) => {
   let { farmers, } = state;
 
@@ -44,8 +113,6 @@ const addFarmer = ({ state, toAdd = 1, }) => {
     numFarmers,
   };
 };
-
-export const FARM_UPGRADE_ACTION = 'farm/farmUpgradeAction';
 
 const changeStateLengths = ({ stateLengths, plotState, amount, }) => ({
   ...stateLengths,
@@ -69,6 +136,9 @@ export const processFarmUpgrades = (state, action) => {
 
   case HIRE_FARMER:
     return addFarmer({ state, numFarmers: action.amount, });
+
+  case ENLARGE_FARM:
+    return enlargeFarm({ state, newSize: action.newSize, });
 
   default:
     throw new Error(`Unrecognized upgrade kind ${action.kind}`);
@@ -109,9 +179,15 @@ const makeFarmerUpgrade = ({ numFarmers, }) => {
   });
 };
 
-export const makeUpgrades = ({ stateLengths, numFarmers, }) => {
+export const makeUpgrades = ({
+  stateLengths,
+  numFarmers,
+  numRows,
+  numCols,
+}) => {
   return [
     makeStateLengthUpgrades({ stateLengths, }),
     [makeFarmerUpgrade({ numFarmers, }),],
+    [makeFieldUpgrade({ numRows, numCols, }),],
   ].flat();
 };

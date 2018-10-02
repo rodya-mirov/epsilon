@@ -6,7 +6,6 @@ import { alea, } from 'seedrandom';
 
 import { makeFarmerAt, } from './utils';
 import { processFarmUpgrades, FARM_UPGRADE_ACTION, } from './upgrades';
-export { makeUpgrades, } from './upgrades';
 
 // largely arbitrary field state; deterministic "random" process from the input
 const initialFieldState = rng => {
