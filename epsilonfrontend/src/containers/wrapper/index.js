@@ -2,8 +2,11 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 import ResourcesSummary from '../resources';
+import PauseButton from '../pause';
 
 import classNames from 'classnames';
+
+import './wrapper.css';
 
 const Header = ({ title, message, }) => (
   <div className="header">
@@ -27,15 +30,20 @@ const Wrapper = ({
     <Header {...headerProps} />
 
     <div className="container">
-      <div className={classNames('row')}>
-        <div>
+      <div className={classNames('row', 'border-bottom')}>
+        <div className="col-9">
+          <ResourcesSummary />
+        </div>
+        <div className="col-3 mt-5">
+          <PauseButton />
+        </div>
+      </div>
+      <div className={classNames('row mt-4')}>
+        <div className="col-7">
           <MainComponent />
         </div>
-        <div style={{ width: '25px', }} />
-        <div>
-          <ResourcesSummary />
+        <div className="col-5">
           {UpgradeComponent ? <UpgradeComponent /> : ''}
-          <SummaryComponent />
         </div>
       </div>
     </div>

@@ -50,7 +50,7 @@ Square.propTypes = {
 };
 
 const PlotGrid = ({ squares, isFarmer, }) => (
-  <div className="farm rounded border">
+  <div className="farm rounded border-success">
     <table className="farm rounded">
       <tbody>
         {squares.map((row, rowIndex) => (
