@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect, } from 'react-redux';
 import { bindActionCreators, } from 'redux';
+import PropTypes from 'prop-types';
 
 import UpgradeComponent from '../upgrades';
 import { makeUpgrades, } from '../../modules/market/upgrades';
+import { stateLengthsPropTypes, } from './propTypes';
 
 const MarketUpgrades = ({ stateLengths, }) => {
   const niceUpgrades = makeUpgrades({ stateLengths, });
@@ -15,7 +17,9 @@ const MarketUpgrades = ({ stateLengths, }) => {
   );
 };
 
-MarketUpgrades.propTypes = {};
+MarketUpgrades.propTypes = {
+  stateLengths: PropTypes.shape(stateLengthsPropTypes),
+};
 
 const mapStateToProps = ({ market, }) => ({
   stateLengths: market.stateLengths,
