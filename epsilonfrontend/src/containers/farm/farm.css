@@ -42,3 +42,8 @@ td.farmplot-READY_FOR_HARVEST {
 td.farmplot-farmer {
   color: #e2cd71;
 }
+
+.fix-height {
+  height: 1in;
+  overflow-y: scroll;
+}

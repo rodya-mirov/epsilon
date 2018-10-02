@@ -5,6 +5,7 @@ import ResourcesSummary from '../resources';
 import PauseButton from '../pause';
 
 import classNames from 'classnames';
+import FarmerSummary from '../farm/farmerStates';
 
 const Header = ({ title, message, }) => (
   <div className="header">
@@ -42,6 +43,7 @@ const Wrapper = ({
         </div>
         <div className="col-5">
           {UpgradeComponent ? <UpgradeComponent /> : ''}
+          <FarmerSummary />
         </div>
       </div>
     </div>
