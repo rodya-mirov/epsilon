@@ -8,9 +8,9 @@ import { getFarmerDescription, } from '../../modules/farm';
 import { farmerPropType, gridPropType, } from './propTypes';
 
 const FarmerSummary = ({ squares, farmers, }) => (
-  <div>
-    <h5>Farmer Activities</h5>
-    <ul>
+  <div className="mt-3">
+    <h6 className="font-weight-bold">Farmer Activities</h6>
+    <ul className="fix-height">
       {farmers.map((farmer, ind) => (
         <li key={ind}>
           Farmer {ind + 1} at ({farmer.col},{farmer.row}) is{' '}
