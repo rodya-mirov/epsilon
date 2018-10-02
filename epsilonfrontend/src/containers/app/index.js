@@ -17,8 +17,8 @@ const App = ({ farmActive, marketActive, }) => (
     <ConversationModal />
     <Router>
       <div>
-        <nav className="navbar navbar-expand-lg navbar-light static-top lightblue-bg">
-          <div className="container">
+        <nav className="navbar-nav navbar-expand-lg navbar-light static-top lightblue-bg">
+          <div className="container mt-2">
             <div className="collapse navbar-collapse" id="navbarResponsive">
               <ul className="navbar-nav mr-auto">
                 {!farmActive ? (
