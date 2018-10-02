@@ -5,7 +5,6 @@ import ResourcesSummary from '../resources';
 import PauseButton from '../pause';
 
 import classNames from 'classnames';
-import FarmerSummary from '../farm/farmerStates';
 
 const Header = ({ title, message, }) => (
   <div className="header">
