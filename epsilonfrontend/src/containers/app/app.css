@@ -9,3 +9,7 @@ nav.black-bg {
 div.main {
   width: 80%;
 }
+
+.navbar-nav {
+  height: 60px;
+}

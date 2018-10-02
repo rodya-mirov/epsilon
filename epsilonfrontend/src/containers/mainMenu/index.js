@@ -13,7 +13,7 @@ const MainMenu = ({ newGame, debugSave, }) => (
       <div>
         <button
           type="button"
-          className="btn btn-space btn-outline-primary"
+          className="btn btn-outline-primary"
           onClick={newGame}
         >
           New Game
@@ -21,7 +21,7 @@ const MainMenu = ({ newGame, debugSave, }) => (
         <br />
         <button
           type="button"
-          className="btn mt-3 btn-space btn-outline-primary"
+          className="btn mt-3 btn-outline-primary"
           onClick={debugSave}
         >
           Load Saved State (Everything Unlocked)
