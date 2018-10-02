@@ -11,18 +11,18 @@ import Wrapper from '../wrapper';
 
 import './market.css';
 
-const makeTitle = ({ numRows, numCols, }) => ({
+const makeTitle = () => ({
   title: 'Buying and Selling',
-  message: `Welcome to the ${numCols}x${numRows} public market`,
+  message: 'Welcome to the public market',
 });
 
-const WrappedMarket = ({ numRows, numCols, isActive, }) => {
+const WrappedMarket = ({ isActive, }) => {
   if (!isActive) {
     return <Redirect to="/" />;
   }
 
   return Wrapper({
-    headerProps: makeTitle({ numRows, numCols, }),
+    headerProps: makeTitle(),
     MainComponent: MarketGrid,
     UpgradeComponent: MarketUpgrades,
     SummaryComponent: MarketSummary,
@@ -30,8 +30,6 @@ const WrappedMarket = ({ numRows, numCols, isActive, }) => {
 };
 
 const mapStateToProps = ({ market, }) => ({
-  numRows: market.numRows,
-  numCols: market.numCols,
   isActive: market.isActive,
 });
 

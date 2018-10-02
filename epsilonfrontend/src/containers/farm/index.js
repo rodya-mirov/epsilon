@@ -9,7 +9,7 @@ import FarmerUpgrades from './upgrades';
 import PlotGrid from './grid';
 import Wrapper from '../wrapper';
 
-const WrappedFarm = ({ numRows, numCols, isActive, }) => {
+const WrappedFarm = ({ isActive, }) => {
   if (!isActive) {
     return (
       <div>
@@ -22,7 +22,7 @@ const WrappedFarm = ({ numRows, numCols, isActive, }) => {
   return Wrapper({
     headerProps: {
       title: 'Farming is Repetitive',
-      message: `Welcome to your lovely ${numCols}x${numRows} farm`,
+      message: 'Welcome to your lovely farm',
     },
     MainComponent: PlotGrid,
     UpgradeComponent: FarmerUpgrades,
@@ -30,11 +30,8 @@ const WrappedFarm = ({ numRows, numCols, isActive, }) => {
   });
 };
 
-const mapStateToProps = state => {
-  const { farm, } = state;
+const mapStateToProps = ({ farm, }) => {
   return {
-    numRows: farm.numRows,
-    numCols: farm.numCols,
     isActive: farm.isActive,
   };
 };
