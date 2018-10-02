@@ -65,6 +65,7 @@ const initNumFarmers = 5;
 
 const makeInitialState = rng => {
   const stateLengths = makeInitialStateLengths();
+  const farmers = makeFarmers(initNumRows, initNumCols, initNumFarmers);
   return {
     isActive: false,
     upgradesUnlocked: false,
@@ -73,7 +74,8 @@ const makeInitialState = rng => {
     squares: makeSquares(initNumRows, initNumCols, () =>
       initialSquare({ rng, stateLengths, })
     ),
-    farmers: makeFarmers(initNumRows, initNumCols, initNumFarmers),
+    farmers,
+    numFarmers: farmers.size,
     stateLengths,
   };
 };

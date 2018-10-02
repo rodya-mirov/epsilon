@@ -6,8 +6,6 @@ import PauseButton from '../pause';
 
 import classNames from 'classnames';
 
-import './wrapper.css';
-
 const Header = ({ title, message, }) => (
   <div className="header">
     <h1 className="mt-5">{title}</h1>

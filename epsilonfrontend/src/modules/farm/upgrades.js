@@ -28,17 +28,20 @@ const upgradeDescriptions = {
   PLANTED: 'Reduce growing time',
 };
 
-const addFarmer = ({ state, numFarmers = 1, }) => {
+const addFarmer = ({ state, toAdd = 1, }) => {
   let { farmers, } = state;
 
-  for (let i = 0; i < numFarmers; i++) {
+  for (let i = 0; i < toAdd; i++) {
     const newFarmer = makeFarmerAt(-1, -1);
     farmers = farmers.push(newFarmer);
   }
 
+  const numFarmers = farmers.size;
+
   return {
     ...state,
     farmers,
+    numFarmers,
   };
 };
 
@@ -85,8 +88,7 @@ const makeStateLengthUpgrades = ({ stateLengths, }) => {
   );
 };
 
-const makeFarmerUpgrade = ({ farmers, }) => {
-  const numFarmers = farmers.size;
+const makeFarmerUpgrade = ({ numFarmers, }) => {
   const moneyAmount = 8 * numFarmers;
 
   const hireAction = makeTrySpendAction({
@@ -107,9 +109,9 @@ const makeFarmerUpgrade = ({ farmers, }) => {
   });
 };
 
-export const makeUpgrades = ({ stateLengths, farmers, }) => {
+export const makeUpgrades = ({ stateLengths, numFarmers, }) => {
   return [
     makeStateLengthUpgrades({ stateLengths, }),
-    [makeFarmerUpgrade({ farmers, }),],
+    [makeFarmerUpgrade({ numFarmers, }),],
   ].flat();
 };
