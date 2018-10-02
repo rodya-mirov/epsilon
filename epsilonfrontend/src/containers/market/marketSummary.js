@@ -9,9 +9,9 @@ import { getMerchantDescription, } from '../../modules/market/merchantState';
 import { merchantPropType, } from './propTypes';
 
 const MerchantSummary = props => (
-  <div className="mt-3 fix-height">
+  <div className="mt-3">
     <h6 className="font-weight-bold">Merchant Activities</h6>
-    <ul>
+    <ul className="fix-height">
       {props.merchants.map((merchant, ind) => (
         <li key={ind}>
           Merchant {ind + 1} is {getMerchantDescription(merchant)}
