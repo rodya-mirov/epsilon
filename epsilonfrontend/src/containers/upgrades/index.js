@@ -17,7 +17,7 @@ const RawUpgradeButton = ({
   return disabled ? (
     <button disabled={true}>{`${text}: ${oldState} (Complete)`}</button>
   ) : (
-    <button onClick={action}>
+    <button type="button" className="btn mt-1 btn-secondary" onClick={action}>
       {`${text}: ${oldState} => ${newState} for ${toEnglishList(
         costs.map(niceCost)
       )}`}
@@ -55,14 +55,12 @@ const UpgradeButton = connect(
 
 const UpgradeSummary = ({ header, upgrades, }) => (
   <div>
-    <h5>{header}</h5>
-    <ul>
-      {upgrades.map((upgrade, ind) => (
-        <li key={ind}>
-          <UpgradeButton {...upgrade} />
-        </li>
-      ))}
-    </ul>
+    <h6 className="font-weight-bold">{header}</h6>
+    {upgrades.map((upgrade, ind) => (
+      <div className="text-left" key={ind}>
+        <UpgradeButton {...upgrade} />
+      </div>
+    ))}
   </div>
 );
 

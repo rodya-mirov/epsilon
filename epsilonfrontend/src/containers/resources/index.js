@@ -5,17 +5,17 @@ import { connect, } from 'react-redux';
 import { bindActionCreators, } from 'redux';
 
 const ResourceSummary = props => (
-  <div>
-    <h5>Available Resources</h5>
-    <ul>
+  <div className="mt-3">
+    <h6 className="font-weight-bold">Available Resources</h6>
+    <ul className="list-unstyled">
       <li>
-        <b>Harvested Limes: </b> {props.limes}
+        <em className="mr-2">Harvested Limes:</em> {props.limes}
       </li>
       <li>
-        <b>Available Seeds: </b> {props.seeds}
+        <em className="mr-2">Available Seeds:</em> {props.seeds}
       </li>
       <li>
-        <b>Money: </b> {props.money}
+        <em className="mr-2">Money:</em> {props.money}
       </li>
     </ul>
   </div>

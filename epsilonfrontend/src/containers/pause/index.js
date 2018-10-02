@@ -7,7 +7,7 @@ import { connect, } from 'react-redux';
 import { setPauseAction, } from '../../modules/general';
 
 const PauseButton = ({ paused, setPause, }) => (
-  <button onClick={() => setPause(!paused)}>
+  <button className="btn btn-danger" onClick={() => setPause(!paused)}>
     {paused ? 'Unpause' : 'Pause'}
   </button>
 );

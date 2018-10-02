@@ -107,7 +107,7 @@ const squaresPropType = ImmutablePropTypes.listOf(
 );
 
 const MarketGrid = ({ squares, }) => (
-  <div className="market rounded border">
+  <div className="market rounded border-success">
     <table className="market rounded">
       <tbody>
         {squares.map((row, rowIndex) => (
