@@ -20,5 +20,3 @@ export const squarePropType = {
 export const squaresPropType = ImmutablePropTypes.listOf(
   ImmutablePropTypes.listOf(PropTypes.shape(squarePropType))
 );
-
-export const stateLengthsPropTypes = PropTypes.object;
