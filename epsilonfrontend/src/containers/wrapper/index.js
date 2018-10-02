@@ -43,7 +43,7 @@ const Wrapper = ({
         </div>
         <div className="col-5">
           {UpgradeComponent ? <UpgradeComponent /> : ''}
-          <FarmerSummary />
+          <SummaryComponent />
         </div>
       </div>
     </div>

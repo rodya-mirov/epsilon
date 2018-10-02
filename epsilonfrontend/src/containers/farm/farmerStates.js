@@ -8,7 +8,7 @@ import { getFarmerDescription, } from '../../modules/farm';
 import { farmerPropType, gridPropType, } from './propTypes';
 
 const FarmerSummary = ({ squares, farmers, }) => (
-  <div className="fix-height mt-3">
+  <div className="mt-3 fix-height">
     <h6 className="font-weight-bold">Farmer Activities</h6>
     <ul>
       {farmers.map((farmer, ind) => (
