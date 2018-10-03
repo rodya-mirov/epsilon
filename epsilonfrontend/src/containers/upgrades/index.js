@@ -4,7 +4,7 @@ import { connect, } from 'react-redux';
 
 import { toEnglishList, } from '../../utils';
 
-const niceCost = ({ amount, unit, }) => `$${amount}`;
+const niceCost = ({ amount, unit, }) => `${amount} ${unit}`;
 
 const RawUpgradeButton = ({
   text,
