@@ -15,7 +15,11 @@ const RawUpgradeButton = ({
   disabled,
 }) => {
   return disabled ? (
-    <button disabled={true}>{`${text}: ${oldState} (Complete)`}</button>
+    <button
+      type="button"
+      className="btn mt-1 btn-secondary btn-sm"
+      disabled={true}
+    >{`${text}: ${oldState} (Complete)`}</button>
   ) : (
     <button
       type="button"
