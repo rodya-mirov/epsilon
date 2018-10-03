@@ -4,7 +4,7 @@ import { connect, } from 'react-redux';
 
 import { toEnglishList, } from '../../utils';
 
-const niceCost = ({ amount, unit, }) => `${amount} ${unit}`;
+const niceCost = ({ amount, unit, }) => `$${amount}`;
 
 const RawUpgradeButton = ({
   text,
@@ -21,15 +21,18 @@ const RawUpgradeButton = ({
       disabled={true}
     >{`${text}: ${oldState} (Complete)`}</button>
   ) : (
-    <button
-      type="button"
-      className="btn mt-1 btn-secondary btn-sm"
-      onClick={action}
-    >
-      {`${text}: ${oldState} => ${newState} for ${toEnglishList(
-        costs.map(niceCost)
-      )}`}
-    </button>
+    <div>
+      <button
+        type="button"
+        className="btn mt-1 btn-secondary btn-sm mr-2"
+        onClick={action}
+      >
+        {`${text} - ${toEnglishList(costs.map(niceCost))}`}
+      </button>
+      {`${oldState}`}
+      &rarr;
+      {`${newState}`}
+    </div>
   );
 };
 
