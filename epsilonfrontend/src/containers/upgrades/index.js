@@ -4,13 +4,16 @@ import { connect, } from 'react-redux';
 
 import { toEnglishList, } from '../../utils';
 
-const niceCost = ({ amount, unit, }) => `${amount} ${unit}`;
+const costString = cost => {
+  const costs = Object.keys(cost).map(key => `${cost[key]} ${key}`);
+  return toEnglishList(costs);
+};
 
 const RawUpgradeButton = ({
   text,
   oldState,
   newState,
-  costs = [],
+  cost = {},
   action,
   disabled,
 }) => {
@@ -27,7 +30,7 @@ const RawUpgradeButton = ({
         className="btn mt-1 btn-secondary btn-sm mr-2"
         onClick={action}
       >
-        {`${text} - ${toEnglishList(costs.map(niceCost))}`}
+        {`${text} - ${costString(cost)}`}
       </button>
       {`${oldState}`}
       &rarr;
@@ -40,12 +43,7 @@ const upgradeProptypes = {
   text: PropTypes.string,
   oldState: PropTypes.any,
   newState: PropTypes.any,
-  costs: PropTypes.arrayOf(
-    PropTypes.shape({
-      amount: PropTypes.number,
-      unit: PropTypes.string.isRequired,
-    })
-  ),
+  cost: PropTypes.objectOf(PropTypes.number),
   action: PropTypes.func,
   disabled: PropTypes.bool,
 };

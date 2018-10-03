@@ -1,8 +1,9 @@
 import { getRequiresWork, } from './plotState';
 import { stateChange, } from './utils';
 
-export const updatePlot = ({ square, stateLengths, }) => {
-  if (getRequiresWork(square.state)) {
+export const updatePlot = ({ square, stateLengths, powers, }) => {
+  const squareState = square.state;
+  if (getRequiresWork(squareState)) {
     return square;
   }
 
@@ -11,7 +12,7 @@ export const updatePlot = ({ square, stateLengths, }) => {
   } else {
     return {
       ...square,
-      timeLeftInState: square.timeLeftInState - 1,
+      timeLeftInState: square.timeLeftInState - powers[squareState],
     };
   }
 };

@@ -1,6 +1,6 @@
 import { List, } from 'immutable';
 import { UNPLOWED, PLOWED, PLANTED, READY_FOR_HARVEST, } from './plotState';
-import { makeInitialStateLengths, } from './plotState';
+import { makeInitialStateLengths, makeActionPowers, } from './plotState';
 
 import { alea, } from 'seedrandom';
 
@@ -76,6 +76,7 @@ const makeInitialState = rng => {
     farmers,
     numFarmers: farmers.size,
     stateLengths,
+    powers: makeActionPowers(),
   };
 };
 

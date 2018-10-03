@@ -62,6 +62,7 @@ const updateMerchantStand = ({
   merchantStand,
   resources,
   stateLengths,
+  powers,
   transactions,
 }) => {
   const { state, timeLeftInState, } = merchantStand;
@@ -100,7 +101,7 @@ const updateMerchantStand = ({
       resources,
       merchantStand: {
         ...merchantStand,
-        timeLeftInState: merchantStand.timeLeftInState - 1,
+        timeLeftInState: merchantStand.timeLeftInState - powers[state],
       },
     };
   }
@@ -108,7 +109,7 @@ const updateMerchantStand = ({
 
 const updateMerchants = state => {
   const { market: oldMarket, resources: oldResources, } = state;
-  const { stateLengths, transactions, } = oldMarket;
+  const { stateLengths, transactions, powers, } = oldMarket;
 
   let merchantStands = List();
   let resources = oldResources;
@@ -118,6 +119,7 @@ const updateMerchants = state => {
       merchantStand,
       resources,
       stateLengths,
+      powers,
       transactions,
     });
     merchantStands = merchantStands.push(updated.merchantStand);

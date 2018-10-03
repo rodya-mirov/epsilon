@@ -1,17 +1,24 @@
-export const makeCost = ({ amount, unit, }) => ({ amount, unit, });
-
 export const makeUpgrade = ({
   text,
   oldState,
   newState,
-  costs = [],
+  cost = {},
   action = () => {},
   disabled = false,
 }) => ({
   text,
   oldState,
   newState,
-  costs,
+  cost,
   action,
   disabled,
 });
+
+export const makePowerCostFunction = ({
+  upgradeMultipliers,
+  upgradePowers,
+}) => ({ currentPower, key, }) => {
+  return Math.ceil(
+    upgradeMultipliers[key] * Math.pow(currentPower, upgradePowers[key])
+  );
+};

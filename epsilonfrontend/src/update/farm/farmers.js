@@ -32,7 +32,7 @@ const requiresSeed = square =>
   square.state === PLOWED && square.timeLeftInState <= 0;
 
 const updateFarmer = (farmerIndex, farm, resources) => {
-  const { stateLengths, } = farm;
+  const { stateLengths, powers, } = farm;
 
   const hasSeed = resources.seeds >= 1;
   const myFarmer = farm.farmers.get(farmerIndex);
@@ -66,7 +66,7 @@ const updateFarmer = (farmerIndex, farm, resources) => {
         if (square.timeLeftInState > 0) {
           const newSquare = {
             ...square,
-            timeLeftInState: square.timeLeftInState - 1,
+            timeLeftInState: square.timeLeftInState - powers[square.state],
           };
           farm = updateSquare(rowIndex, colIndex, newSquare, farm);
           return { farm, resources, };

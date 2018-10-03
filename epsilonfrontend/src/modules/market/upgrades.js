@@ -1,5 +1,6 @@
 import { WAITING_FOR_CUSTOMER, BARTERING, ACCOUNTING, } from './merchantState';
-import { makeStateLengthUpgrade, } from '../../upgrades';
+import { makeUpgrade, makePowerCostFunction, } from '../../upgrades/utils';
+import { MONEY, makeTrySpendAction, } from '../resources';
 
 const upgradePowers = {
   [WAITING_FOR_CUSTOMER]: 2,
@@ -8,22 +9,27 @@ const upgradePowers = {
 };
 
 const upgradeMultipliers = {
-  [WAITING_FOR_CUSTOMER]: 10,
-  [BARTERING]: 10,
-  [ACCOUNTING]: 10,
+  [WAITING_FOR_CUSTOMER]: 4,
+  [BARTERING]: 4,
+  [ACCOUNTING]: 4,
 };
 
 const upgradeDescriptions = {
-  [WAITING_FOR_CUSTOMER]: 'Reduce time between customers',
-  [BARTERING]: 'Reduce bartering time',
-  [ACCOUNTING]: 'Reduce accounting time',
+  [WAITING_FOR_CUSTOMER]: 'Speed up time to attract customers',
+  [BARTERING]: 'Speed up bartering',
+  [ACCOUNTING]: 'Speed up accounting',
 };
+
+const powerCostFunction = makePowerCostFunction({
+  upgradePowers,
+  upgradeMultipliers,
+});
 
 export const MARKET_UPGRADE_ACTION = 'market/marketUpgradeAction';
 
-const changeStateLengths = ({ stateLengths, plotState, amount, }) => ({
-  ...stateLengths,
-  [plotState]: stateLengths[plotState] - amount,
+const changePowers = ({ powers, key, amount, }) => ({
+  ...powers,
+  [key]: powers[key] + amount,
 });
 
 export const processMarketUpgrades = (state, action) => {
@@ -33,9 +39,9 @@ export const processMarketUpgrades = (state, action) => {
   case ACCOUNTING:
     return {
       ...state,
-      stateLengths: changeStateLengths({
-        stateLengths: state.stateLengths,
-        plotState: action.kind,
+      powers: changePowers({
+        powers: state.powers,
+        key: action.kind,
         amount: action.amount,
       }),
     };
@@ -45,15 +51,36 @@ export const processMarketUpgrades = (state, action) => {
   }
 };
 
-const upgradeMaker = makeStateLengthUpgrade({
-  upgradePowers,
-  upgradeMultipliers,
-  upgradeDescriptions,
-  upgradeActionType: MARKET_UPGRADE_ACTION,
-});
+const makePowerUpgrade = ({ key, oldState, }) => {
+  const newState = oldState + 1;
+  const cost = { [MONEY]: powerCostFunction({ currentPower: oldState, key, }), };
 
-export const makeUpgrades = ({ stateLengths, }) => {
-  return [BARTERING, WAITING_FOR_CUSTOMER, ACCOUNTING,].map(state =>
-    upgradeMaker({ state, stateLengths, })
+  return makeUpgrade({
+    text: upgradeDescriptions[key],
+    oldState,
+    newState,
+    cost,
+    action: dispatch =>
+      dispatch(
+        makeTrySpendAction({
+          cost,
+          successAction: {
+            type: MARKET_UPGRADE_ACTION,
+            kind: key,
+            amount: 1,
+          },
+        })
+      ),
+  });
+};
+
+const makePowerUpgrades = ({ powers, }) => {
+  return [WAITING_FOR_CUSTOMER, BARTERING, ACCOUNTING,].map(key =>
+    makePowerUpgrade({ key, oldState: powers[key], })
   );
+};
+
+// TODO 111: updates usages (stateLengths => powers)
+export const makeUpgrades = ({ powers, }) => {
+  return makePowerUpgrades({ powers, });
 };

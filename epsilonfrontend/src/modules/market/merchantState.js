@@ -11,9 +11,15 @@ export const NORTH = 'NORTH';
 export const SOUTH = 'SOUTH';
 
 export const makeStateLengths = () => ({
-  WAITING_FOR_CUSTOMER: 15,
-  BARTERING: 15,
-  ACCOUNTING: 10,
+  WAITING_FOR_CUSTOMER: 30,
+  BARTERING: 30,
+  ACCOUNTING: 20,
+});
+
+export const initActionPowers = () => ({
+  WAITING_FOR_CUSTOMER: 2,
+  BARTERING: 2,
+  ACCOUNTING: 2,
 });
 
 const descriptionMap = {

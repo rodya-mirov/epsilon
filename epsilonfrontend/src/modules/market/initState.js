@@ -27,6 +27,7 @@ import {
   WEST,
   NORTH,
   SOUTH,
+  initActionPowers,
 } from './merchantState';
 
 import { initTransactions, } from './transactions';
@@ -326,6 +327,7 @@ export const makeInitialState = rng => {
 
   return {
     stateLengths,
+    powers: initActionPowers(),
     numRows,
     numCols,
     merchantStands,

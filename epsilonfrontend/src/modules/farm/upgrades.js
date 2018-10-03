@@ -1,8 +1,7 @@
 import { READY_FOR_HARVEST, PLANTED, PLOWED, UNPLOWED, } from './plotState';
 import { makeFarmerAt, } from './utils';
 
-import { makeStateLengthUpgrade, } from '../../upgrades';
-import { makeUpgrade, makeCost, } from '../../upgrades/utils';
+import { makeUpgrade, makePowerCostFunction, } from '../../upgrades/utils';
 import { MONEY, makeTrySpendAction, } from '../resources';
 import { arrayGridToImmutable, makeArrayGrid, } from '../../utils';
 
@@ -29,10 +28,44 @@ const upgradeMultipliers = {
 };
 
 const upgradeDescriptions = {
-  READY_FOR_HARVEST: 'Reduce harvest time',
-  UNPLOWED: 'Reduce plowing time',
-  PLOWED: 'Reduce planting time',
-  PLANTED: 'Reduce growing time',
+  READY_FOR_HARVEST: 'Improve harvest speed',
+  UNPLOWED: 'Improve plowing speed',
+  PLOWED: 'Improve planting speed',
+  PLANTED: 'Improve growing speed',
+};
+
+const powerCostFunction = makePowerCostFunction({
+  upgradePowers,
+  upgradeMultipliers,
+});
+
+const makePowerUpgrade = ({ key, oldState, }) => {
+  const newState = oldState + 1;
+  const cost = { [MONEY]: powerCostFunction({ currentPower: oldState, key, }), };
+
+  return makeUpgrade({
+    text: upgradeDescriptions[key],
+    oldState,
+    newState,
+    cost,
+    action: dispatch =>
+      dispatch(
+        makeTrySpendAction({
+          cost,
+          successAction: {
+            type: FARM_UPGRADE_ACTION,
+            kind: key,
+            amount: 1,
+          },
+        })
+      ),
+  });
+};
+
+const makePowerUpgrades = ({ powers, }) => {
+  return [UNPLOWED, PLOWED, PLANTED, READY_FOR_HARVEST,].map(key =>
+    makePowerUpgrade({ key, oldState: powers[key], })
+  );
 };
 
 const makeFieldUpgrade = ({ numRows, numCols, }) => {
@@ -49,17 +82,18 @@ const makeFieldUpgrade = ({ numRows, numCols, }) => {
     });
   }
 
-  const upgradeCost = 12 * (newNumRows * newNumCols - numRows * numCols);
+  const upgradeCost = 12 * newNumRows * newNumCols;
+  const cost = { [MONEY]: upgradeCost, };
 
   return makeUpgrade({
     text: 'Enlarge your field',
     oldState: sizeString(numRows, numCols),
     newState: sizeString(newNumRows, newNumCols),
-    costs: [makeCost({ amount: upgradeCost, unit: MONEY, }),],
+    cost,
     action: dispatch =>
       dispatch(
         makeTrySpendAction({
-          cost: { [MONEY]: upgradeCost, },
+          cost,
           successAction: {
             type: FARM_UPGRADE_ACTION,
             kind: ENLARGE_FARM,
@@ -114,9 +148,9 @@ const addFarmer = ({ state, toAdd = 1, }) => {
   };
 };
 
-const changeStateLengths = ({ stateLengths, plotState, amount, }) => ({
-  ...stateLengths,
-  [plotState]: stateLengths[plotState] + amount,
+const changePowers = ({ powers, key, amount, }) => ({
+  ...powers,
+  [key]: powers[key] + amount,
 });
 
 export const processFarmUpgrades = (state, action) => {
@@ -127,10 +161,10 @@ export const processFarmUpgrades = (state, action) => {
   case UNPLOWED:
     return {
       ...state,
-      stateLengths: changeStateLengths({
-        stateLengths: state.stateLengths,
-        plotState: action.kind,
-        amount: -action.amount,
+      powers: changePowers({
+        powers: state.powers,
+        key: action.kind,
+        amount: action.amount,
       }),
     };
 
@@ -145,24 +179,12 @@ export const processFarmUpgrades = (state, action) => {
   }
 };
 
-const stateLengthUpgradeMaker = makeStateLengthUpgrade({
-  upgradePowers,
-  upgradeMultipliers,
-  upgradeDescriptions,
-  upgradeActionType: FARM_UPGRADE_ACTION,
-});
-
-const makeStateLengthUpgrades = ({ stateLengths, }) => {
-  return [UNPLOWED, PLOWED, PLANTED, READY_FOR_HARVEST,].map(state =>
-    stateLengthUpgradeMaker({ state, stateLengths, })
-  );
-};
-
 const makeFarmerUpgrade = ({ numFarmers, }) => {
-  const moneyAmount = 8 * numFarmers;
+  const moneyAmount = numFarmers * (numFarmers - 2) * 15;
+  const cost = { [MONEY]: moneyAmount, };
 
   const hireAction = makeTrySpendAction({
-    cost: { [MONEY]: moneyAmount, },
+    cost,
     successAction: {
       type: FARM_UPGRADE_ACTION,
       kind: HIRE_FARMER,
@@ -174,19 +196,15 @@ const makeFarmerUpgrade = ({ numFarmers, }) => {
     text: 'Hire farmer',
     oldState: numFarmers,
     newState: numFarmers + 1,
-    costs: [makeCost({ amount: moneyAmount, unit: MONEY, }),],
+    cost,
     action: dispatch => dispatch(hireAction),
   });
 };
 
-export const makeUpgrades = ({
-  stateLengths,
-  numFarmers,
-  numRows,
-  numCols,
-}) => {
+// TODO 111: updates usages (stateLengths => powers)
+export const makeUpgrades = ({ powers, numFarmers, numRows, numCols, }) => {
   return [
-    makeStateLengthUpgrades({ stateLengths, }),
+    makePowerUpgrades({ powers, }),
     [makeFarmerUpgrade({ numFarmers, }),],
     [makeFieldUpgrade({ numRows, numCols, }),],
   ].flat();

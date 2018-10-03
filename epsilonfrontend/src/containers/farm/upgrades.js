@@ -7,9 +7,9 @@ import UpgradeButtons from '../upgrades';
 
 import { makeUpgrades, } from '../../modules/farm/upgrades';
 
-const FarmerUpgrades = ({ stateLengths, numFarmers, numRows, numCols, }) => {
+const FarmerUpgrades = ({ powers, numFarmers, numRows, numCols, }) => {
   const actualUpgrades = makeUpgrades({
-    stateLengths,
+    powers,
     numFarmers,
     numRows,
     numCols,
@@ -26,10 +26,10 @@ FarmerUpgrades.propTypes = {
 };
 
 const mapStateToProps = ({ farm, }) => {
-  const { stateLengths, numFarmers, numRows, numCols, } = farm;
+  const { powers, numFarmers, numRows, numCols, } = farm;
 
   return {
-    stateLengths,
+    powers,
     numFarmers,
     numRows,
     numCols,

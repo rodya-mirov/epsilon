@@ -1,12 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect, } from 'react-redux';
 import { bindActionCreators, } from 'redux';
 
 import UpgradeComponent from '../upgrades';
 import { makeUpgrades, } from '../../modules/market/upgrades';
 
-const MarketUpgrades = ({ stateLengths, }) => {
-  const niceUpgrades = makeUpgrades({ stateLengths, });
+const MarketUpgrades = ({ powers, }) => {
+  const niceUpgrades = makeUpgrades({ powers, });
   return (
     <UpgradeComponent
       header={'Upgrade your Merchants'}
@@ -15,10 +16,12 @@ const MarketUpgrades = ({ stateLengths, }) => {
   );
 };
 
-MarketUpgrades.propTypes = {};
+MarketUpgrades.propTypes = {
+  powers: PropTypes.objectOf(PropTypes.number),
+};
 
 const mapStateToProps = ({ market, }) => ({
-  stateLengths: market.stateLengths,
+  powers: market.powers,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
