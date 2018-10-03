@@ -3,6 +3,11 @@ import { alea, } from 'seedrandom';
 import { makeInitialState, } from './initState';
 
 import { MARKET_UPGRADE_ACTION, processMarketUpgrades, } from './upgrades';
+import {
+  switchTransaction,
+  increasePriorityTransaction,
+  decreasePriorityTransaction,
+} from './transactions';
 
 /**
  * Description of the state & general actions associated to the market.
@@ -40,6 +45,55 @@ export const initialState = makeInitialState(
 );
 
 const UNLOCK_MARKET = 'market/unlockMarket';
+const ALTER_TRANSACTIONS = 'market/alterTransactions';
+
+const SWITCH = 'market/switch';
+const INCREASE_PRIORITY = 'market/increasePriority';
+const DECREASE_PRIORITY = 'market/decreasePriority';
+
+export const increasePriorityAction = ({ index, }) => ({
+  type: ALTER_TRANSACTIONS,
+  kind: INCREASE_PRIORITY,
+  index,
+});
+
+export const decreasePriorityAction = ({ index, }) => ({
+  type: ALTER_TRANSACTIONS,
+  kind: DECREASE_PRIORITY,
+  index,
+});
+
+export const switchTransactionAction = ({ index, }) => ({
+  type: ALTER_TRANSACTIONS,
+  kind: SWITCH,
+  index,
+});
+
+const processAlterTransactions = (state, action) => {
+  const { transactions, } = state;
+  const { kind, index, } = action;
+
+  const newTransactions = (() => {
+    switch (kind) {
+    case SWITCH:
+      return switchTransaction({ transactions, index, });
+
+    case INCREASE_PRIORITY:
+      return increasePriorityTransaction({ transactions, index, });
+
+    case DECREASE_PRIORITY:
+      return decreasePriorityTransaction({ transactions, index, });
+
+    default:
+      throw new Error(`Unrecoginized transaction alteration kind ${kind}`);
+    }
+  })();
+
+  return {
+    ...state,
+    transactions: newTransactions,
+  };
+};
 
 export const unlockMarketAction = () => ({
   type: UNLOCK_MARKET,
@@ -64,6 +118,9 @@ export default (state = initialState, action) => {
   switch (action.type) {
   case MARKET_UPGRADE_ACTION:
     return processMarketUpgrades(state, action);
+
+  case ALTER_TRANSACTIONS:
+    return processAlterTransactions(state, action);
 
   default:
     return state;

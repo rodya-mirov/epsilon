@@ -18,12 +18,7 @@ Header.propTypes = {
   message: PropTypes.string.isRequired,
 };
 
-const Wrapper = ({
-  headerProps,
-  MainComponent,
-  UpgradeComponent = undefined,
-  SummaryComponent,
-}) => (
+const Wrapper = ({ headerProps, MainComponent, RhsComponents, }) => (
   <div className="container">
     <Header {...headerProps} />
 
@@ -41,8 +36,9 @@ const Wrapper = ({
           <MainComponent />
         </div>
         <div className="col-5">
-          {UpgradeComponent ? <UpgradeComponent /> : ''}
-          <SummaryComponent />
+          {RhsComponents.map((RhsComponent, compInd) => (
+            <RhsComponent key={compInd} />
+          ))}
         </div>
       </div>
     </div>

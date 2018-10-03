@@ -6,6 +6,7 @@ import { bindActionCreators, } from 'redux';
 import MarketSummary from './marketSummary';
 import MarketGrid from './grid';
 import MarketUpgrades from './upgrades';
+import TransactionsOptions from './options';
 
 import Wrapper from '../wrapper';
 
@@ -24,8 +25,7 @@ const WrappedMarket = ({ isActive, }) => {
   return Wrapper({
     headerProps: makeTitle(),
     MainComponent: MarketGrid,
-    UpgradeComponent: MarketUpgrades,
-    SummaryComponent: MarketSummary,
+    RhsComponents: [TransactionsOptions, MarketUpgrades, MarketSummary,],
   });
 };
 

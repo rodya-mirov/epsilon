@@ -29,6 +29,8 @@ import {
   SOUTH,
 } from './merchantState';
 
+import { initTransactions, } from './transactions';
+
 // used for initialization
 const initNumRows = 15;
 const initNumCols = 20;
@@ -329,6 +331,7 @@ export const makeInitialState = rng => {
     merchantStands,
     squares,
     pedestrians,
+    transactions: initTransactions(),
     isActive: false,
   };
 };

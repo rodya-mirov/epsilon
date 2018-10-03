@@ -1,8 +1,6 @@
 import { reduceReducers, } from 'redux-loop';
 import { List, } from 'immutable';
 
-import { SEEDS, MONEY, } from '../../modules/resources';
-
 import {
   getNextState,
   BARTERING,
@@ -12,37 +10,17 @@ import {
 
 import { updatePedestrians, } from './pedestrians';
 
-const seedTransaction = {
-  name: 'seeds',
-  costs: { money: 1, },
-  gains: { seeds: 1, },
-};
-
-const limeTransaction = {
-  name: 'limes',
-  costs: { limes: 1, },
-  gains: { money: 5, },
-};
-
-const transactionPrecedence = ({ resources, }) => {
-  const { [SEEDS]: seeds, [MONEY]: money, } = resources;
-
-  if (seeds >= 100) {
-    return [limeTransaction,];
-  }
-
-  if (seeds < 10 || seeds < money / 5) {
-    return [seedTransaction, limeTransaction,];
-  }
-
-  return [limeTransaction, seedTransaction,];
-};
-
 const canAfford = ({ resources, transaction, }) => {
   const { costs, } = transaction;
   return Object.keys(costs).every(
     resourceType => resources[resourceType] >= costs[resourceType]
   );
+};
+
+const afforadableTransactions = ({ resources, transactions, }) => {
+  return transactions
+    .filter(t => t.activated)
+    .filter(transaction => canAfford({ resources, transaction, }));
 };
 
 const applyChange = ({ change, resources, mult = 1, }) => {
@@ -60,8 +38,11 @@ const applyCosts = ({ transaction, resources, }) =>
 const applyGains = ({ transaction, resources, }) =>
   applyChange({ change: transaction.gains, resources, });
 
-const startTransaction = ({ resources, }) => {
-  for (const transaction of transactionPrecedence({ resources, })) {
+const startTransaction = ({ resources, transactions, }) => {
+  for (const transaction of afforadableTransactions({
+    resources,
+    transactions,
+  })) {
     if (canAfford({ resources, transaction, })) {
       return {
         transaction,
@@ -77,7 +58,12 @@ const finishTransaction = ({ transaction, resources, }) => ({
   resources: applyGains({ transaction, resources, }),
 });
 
-const updateMerchantStand = ({ merchantStand, resources, stateLengths, }) => {
+const updateMerchantStand = ({
+  merchantStand,
+  resources,
+  stateLengths,
+  transactions,
+}) => {
   const { state, timeLeftInState, } = merchantStand;
   if (timeLeftInState <= 0) {
     const newState = getNextState(state);
@@ -100,7 +86,7 @@ const updateMerchantStand = ({ merchantStand, resources, stateLengths, }) => {
     };
 
     if (newState === BARTERING) {
-      return finisher(startTransaction({ resources, }));
+      return finisher(startTransaction({ resources, transactions, }));
     } else if (newState === ACCOUNTING) {
       return finisher(
         finishTransaction({ transaction: merchantStand.transaction, resources, })
@@ -122,7 +108,7 @@ const updateMerchantStand = ({ merchantStand, resources, stateLengths, }) => {
 
 const updateMerchants = state => {
   const { market: oldMarket, resources: oldResources, } = state;
-  const { stateLengths, } = oldMarket;
+  const { stateLengths, transactions, } = oldMarket;
 
   let merchantStands = List();
   let resources = oldResources;
@@ -132,6 +118,7 @@ const updateMerchants = state => {
       merchantStand,
       resources,
       stateLengths,
+      transactions,
     });
     merchantStands = merchantStands.push(updated.merchantStand);
     resources = updated.resources;

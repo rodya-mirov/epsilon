@@ -25,8 +25,7 @@ const WrappedFarm = ({ isActive, }) => {
       message: 'Welcome to your lovely farm',
     },
     MainComponent: PlotGrid,
-    UpgradeComponent: FarmerUpgrades,
-    SummaryComponent: FarmerSummary,
+    RhsComponents: [FarmerUpgrades, FarmerSummary,],
   });
 };
 
