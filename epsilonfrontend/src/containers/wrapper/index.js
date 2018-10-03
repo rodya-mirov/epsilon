@@ -8,8 +8,8 @@ import classNames from 'classnames';
 
 const Header = ({ title, message, }) => (
   <div className="header">
-    <h1 className="mt-5">{title}</h1>
-    <p>{message}</p>
+    <h1 className="mt-3">{title}</h1>
+    <div>{message}</div>
   </div>
 );
 
@@ -28,7 +28,7 @@ const Wrapper = ({
     <Header {...headerProps} />
 
     <div className="container">
-      <div className={classNames('row', 'border-bottom')}>
+      <div className={classNames('row', 'border', 'mt-1')}>
         <div className="col-9">
           <ResourcesSummary />
         </div>

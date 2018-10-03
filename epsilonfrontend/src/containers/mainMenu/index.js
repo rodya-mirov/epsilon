@@ -10,7 +10,7 @@ import {
 
 const MainMenu = ({ newGame, debugSave, richSave, }) => (
   <div className="container">
-    <h1 className="mt-5">Main Menu</h1>
+    <h1 className="mt-3">Main Menu</h1>
     <p>Some things you can do</p>
 
     <div className="container">
