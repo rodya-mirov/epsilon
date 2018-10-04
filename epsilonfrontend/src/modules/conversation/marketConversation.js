@@ -1,4 +1,4 @@
-import { push, } from 'connected-react-router';
+import { push, } from '../router';
 
 import { unlockMarketAction, } from '../../modules/market';
 

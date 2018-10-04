@@ -4,6 +4,7 @@ import farm, { initialState as farmInitialState, } from './farm';
 import market, { initialState as marketInitialState, } from './market';
 import resources, { initialState as resourcesInitialState, } from './resources';
 import general, { initialState as generalInitialState, } from './general';
+import router from './router';
 import progression, {
   initialState as progressionInitialState,
 } from './progression';
@@ -32,4 +33,4 @@ export const fullInitialState = {
   progression: progressionInitialState,
 };
 
-export default reduceReducers(combined, update, loadSave);
+export default reduceReducers(combined, update, loadSave, router);

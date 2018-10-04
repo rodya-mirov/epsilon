@@ -1,5 +1,3 @@
-import { push, } from 'connected-react-router';
-
 import { unlockFarmAction, } from '../../modules/farm';
 
 import {
@@ -9,6 +7,8 @@ import {
   SELF_SPEAKER,
   MAIN_CONVERSATION_TYPE,
 } from './utils';
+
+import { push, } from '../router';
 
 export default {
   startIndex: 0,
@@ -52,7 +52,7 @@ export default {
       text: 'Cool! That\'s cool. Anyway I bought you a lime farm.',
       speaker: OTHER_SPEAKER,
       advance: 'What\'s that now?',
-      advanceBy: 2,
+      advanceBy: 3,
     }),
     message({
       text: 'What\'s that now?',
@@ -65,7 +65,8 @@ export default {
       advance: '(hang up)',
     }),
     message({
-      text: 'You have unlocked the FARM! Check it out in the nav bar.',
+      text: 'You have unlocked the FARM!',
+      advance: '(head there now)',
       speaker: TUTORIAL,
     }),
   ],

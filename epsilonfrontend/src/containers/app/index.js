@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Link, BrowserRouter as Router, } from 'react-router-dom';
+import { Route, Link, Router, } from 'react-router-dom';
 import Farm from '../farm';
 import Market from '../market';
 import MainMenu from '../mainMenu';
@@ -9,13 +9,14 @@ import { bindActionCreators, } from 'redux';
 import { connect, } from 'react-redux';
 
 import { ConversationModal, } from '../modals';
+import { browserHistory, } from '../../store';
 
 import './app.css';
 
 const App = ({ farmActive, marketActive, }) => (
   <div>
     <ConversationModal />
-    <Router>
+    <Router history={browserHistory}>
       <div>
         <nav className="navbar-nav navbar-expand-lg navbar-light static-top lightblue-bg">
           <div className="container mt-2">
