@@ -1,4 +1,5 @@
 import { unlockMarketAction, } from '../../modules/market';
+import { warn, } from '../toastr';
 
 import {
   message,
@@ -71,6 +72,12 @@ export default {
             makeTrySpendAction({
               cost: { [LIMES]: 20, },
               successActions: [unlockMarketAction(), push('/market'),],
+              failureActions: [
+                warn({
+                  title: 'Can\'t afford it.',
+                  text: 'You can do it later.',
+                }),
+              ],
             }),
           ],
         }),

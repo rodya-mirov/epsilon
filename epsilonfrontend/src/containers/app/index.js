@@ -14,6 +14,10 @@ import { browserHistory, } from '../../store';
 import './app.css';
 import { startMarketUnlockConversation, } from '../../modules/conversation';
 
+import ReduxToastr from 'react-redux-toastr';
+
+import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
+
 const UnlockButton = ({ onClick, text, }) => (
   <div className="nav-item" onClick={onClick} style={{ cursor: 'pointer', }}>
     <p
@@ -32,6 +36,16 @@ UnlockButton.propTypes = {
 
 const App = ({ farmActive, marketActive, unlockMarket, }) => (
   <div>
+    <ReduxToastr
+      timeOut={4000}
+      newestOnTop={true}
+      preventDuplicates
+      position="bottom-center"
+      transitionIn="fadeIn"
+      transitionOut="fadeOut"
+      progressBar
+      closeOnToastrClick
+    />
     <ConversationModal />
     <Router history={browserHistory}>
       <div>
