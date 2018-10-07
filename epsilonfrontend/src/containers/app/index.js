@@ -14,14 +14,20 @@ import { browserHistory, } from '../../store';
 import './app.css';
 import { startMarketUnlockConversation, } from '../../modules/conversation';
 
-const UnlockMarketButton = ({ onClick, }) => (
-  <div className="unlockButton" onClick={onClick} style={{ cursor: 'pointer', }}>
-    Unlock Market
+const UnlockButton = ({ onClick, text, }) => (
+  <div className="nav-item" onClick={onClick} style={{ cursor: 'pointer', }}>
+    <p
+      className="nav-link border rounded"
+      style={{ 'background-color': 'rgba(255, 255, 0, 0.3)', }}
+    >
+      {text}
+    </p>
   </div>
 );
 
-UnlockMarketButton.propTypes = {
+UnlockButton.propTypes = {
   onClick: PropTypes.func,
+  text: PropTypes.string,
 };
 
 const App = ({ farmActive, marketActive, unlockMarket, }) => (
@@ -44,7 +50,10 @@ const App = ({ farmActive, marketActive, unlockMarket, }) => (
                 )}
                 {!marketActive ? (
                   farmActive ? (
-                    <UnlockMarketButton onClick={unlockMarket} />
+                    <UnlockButton
+                      onClick={unlockMarket}
+                      text={'Unlock Market'}
+                    />
                   ) : (
                     ''
                   )
