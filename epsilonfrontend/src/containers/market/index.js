@@ -1,5 +1,4 @@
 import React from 'react';
-import { Redirect, } from 'react-router-dom';
 import { connect, } from 'react-redux';
 import { bindActionCreators, } from 'redux';
 
@@ -11,15 +10,16 @@ import TransactionsOptions from './options';
 import Wrapper from '../wrapper';
 
 import './market.css';
+import { goBack, } from '../../modules/router';
 
 const makeTitle = () => ({
   title: 'Buying and Selling',
   message: 'Welcome to the public market',
 });
 
-const WrappedMarket = ({ isActive, }) => {
+const WrappedMarket = ({ isActive, goBack, }) => {
   if (!isActive) {
-    return <Redirect to="/" />;
+    goBack();
   }
 
   return Wrapper({
@@ -33,7 +33,13 @@ const mapStateToProps = ({ market, }) => ({
   isActive: market.isActive,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      goBack: goBack,
+    },
+    dispatch
+  );
 
 export default connect(
   mapStateToProps,

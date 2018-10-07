@@ -1,4 +1,5 @@
 import { Cmd, loop, } from 'redux-loop';
+import { List, } from 'immutable';
 
 export const MONEY = 'money';
 export const SEEDS = 'seeds';
@@ -16,24 +17,37 @@ export const makeTrySpendAction = ({
   cost,
   successAction = undefined,
   failureAction = undefined,
+  successActions = [],
+  failureActions = [],
 }) => {
-  return { type: TRY_SPEND_ACTION, cost, successAction, failureAction, };
+  let actualSuccessActions = successActions ? List(successActions) : List();
+  if (successAction) {
+    actualSuccessActions = actualSuccessActions.push(successAction);
+  }
+
+  let actualFailureActions = failureActions ? List(failureActions) : List();
+  if (failureAction) {
+    actualFailureActions = actualFailureActions.push(failureAction);
+  }
+  return {
+    type: TRY_SPEND_ACTION,
+    cost,
+    successActions: actualSuccessActions,
+    failureActions: actualFailureActions,
+  };
 };
 
-const resolveTrySpend = (
-  state,
-  { cost, successAction = undefined, failureAction = undefined, }
-) => {
+const resolveTrySpend = (state, { cost, successActions, failureActions, }) => {
   const newState = { ...state, };
 
   for (const resourceType of Object.keys(cost)) {
     if (newState[resourceType] < cost[resourceType]) {
-      return loop(state, failureAction ? Cmd.action(failureAction) : Cmd.none);
+      return loop(state, Cmd.list(failureActions.map(Cmd.action).toJS()));
     }
     newState[resourceType] -= cost[resourceType];
   }
 
-  return loop(newState, successAction ? Cmd.action(successAction) : Cmd.none);
+  return loop(newState, Cmd.list(successActions.map(Cmd.action).toJS()));
 };
 
 export default (state = initialState, action) => {

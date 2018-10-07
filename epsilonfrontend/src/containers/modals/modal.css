@@ -39,6 +39,7 @@ p.conversationBox {
 }
 
 button.nextMessage {
-  text-align: left;
+  text-align: center;
   width: 100%;
+  height: 100%;
 }

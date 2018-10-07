@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import { bindActionCreators, } from 'redux';
 import { connect, } from 'react-redux';
 import classNames from 'classnames';
@@ -11,11 +12,13 @@ import {
   TUTORIAL,
 } from '../../modules/conversation';
 
+import { List, } from 'immutable';
+import { Optional, } from '../../utils/optional';
+
 const msgPropType = PropTypes.shape({
   text: PropTypes.string,
 });
 
-const makeMessages = ({ messages, }) => messages;
 const makeCssClass = ({ speaker, }) => {
   switch (speaker) {
   case SELF_SPEAKER:
@@ -53,12 +56,19 @@ const ConversationModal = ({
           </p>
         ))}
 
-        <button
-          onClick={advanceConversation}
-          className={classNames('nextMessage')}
-        >
-          {messages[messages.length - 1].advance}
-        </button>
+        <div className="row">
+          {messages.last().advances.map((advance, ind) => (
+            <div className="col" key={ind}>
+              <button
+                onClick={() => advanceConversation(ind)}
+                className={classNames('nextMessage')}
+                key={ind}
+              >
+                {advance.text}
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   ) : (
@@ -67,15 +77,21 @@ const ConversationModal = ({
 };
 
 ConversationModal.propTypes = {
-  messages: PropTypes.arrayOf(msgPropType),
+  messages: ImmutablePropTypes.listOf(msgPropType),
   inConversation: PropTypes.bool.isRequired,
   advanceConversation: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => {
-  const { conversation, } = state;
+const getMessages = conversation => {
+  return Optional.of(conversation)
+    .filter(c => c.inConversation)
+    .map(c => c.conversationStack.last().messages)
+    .orElse(List());
+};
+
+const mapStateToProps = ({ conversation, }) => {
   return {
-    messages: conversation ? makeMessages(conversation) : [],
+    messages: conversation ? getMessages(conversation) : [],
     inConversation: conversation.inConversation,
   };
 };

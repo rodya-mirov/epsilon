@@ -5,9 +5,6 @@ import market, { initialState as marketInitialState, } from './market';
 import resources, { initialState as resourcesInitialState, } from './resources';
 import general, { initialState as generalInitialState, } from './general';
 import router from './router';
-import progression, {
-  initialState as progressionInitialState,
-} from './progression';
 import conversation, {
   initialState as conversationInitialState,
 } from './conversation';
@@ -21,7 +18,6 @@ const combined = combineReducers({
   resources,
   general,
   conversation,
-  progression,
 });
 
 export const fullInitialState = {
@@ -30,7 +26,6 @@ export const fullInitialState = {
   resources: resourcesInitialState,
   general: generalInitialState,
   conversation: conversationInitialState,
-  progression: progressionInitialState,
 };
 
 export default reduceReducers(combined, update, loadSave, router);

@@ -12,8 +12,19 @@ import { ConversationModal, } from '../modals';
 import { browserHistory, } from '../../store';
 
 import './app.css';
+import { startMarketUnlockConversation, } from '../../modules/conversation';
 
-const App = ({ farmActive, marketActive, }) => (
+const UnlockMarketButton = ({ onClick, }) => (
+  <div className="unlockButton" onClick={onClick}>
+    Unlock Market
+  </div>
+);
+
+UnlockMarketButton.propTypes = {
+  onClick: PropTypes.func,
+};
+
+const App = ({ farmActive, marketActive, unlockMarket, }) => (
   <div>
     <ConversationModal />
     <Router history={browserHistory}>
@@ -32,7 +43,11 @@ const App = ({ farmActive, marketActive, }) => (
                   </li>
                 )}
                 {!marketActive ? (
-                  ''
+                  farmActive ? (
+                    <UnlockMarketButton onClick={unlockMarket} />
+                  ) : (
+                    ''
+                  )
                 ) : (
                   <li className="nav-item">
                     <Link className="nav-link" to="/market">
@@ -63,6 +78,7 @@ const App = ({ farmActive, marketActive, }) => (
 App.propTypes = {
   farmActive: PropTypes.bool,
   marketActive: PropTypes.bool,
+  unlockMarket: PropTypes.func,
 };
 
 const mapStateToProps = ({ farm, market, }) => ({
@@ -71,7 +87,13 @@ const mapStateToProps = ({ farm, market, }) => ({
 });
 
 // no actions yet
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      unlockMarket: startMarketUnlockConversation,
+    },
+    dispatch
+  );
 
 export default connect(
   mapStateToProps,
