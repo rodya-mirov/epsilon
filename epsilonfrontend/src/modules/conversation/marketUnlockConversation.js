@@ -21,22 +21,41 @@ export default {
   conversationType: MARKET_UNLOCK_CONVERSATION_TYPE,
   messages: List([
     message({
-      text: 'Limes, man',
+      text: 'How much money we making on these limes?',
       speaker: OTHER_SPEAKER,
-      advances: twoAdvance('Yeah'),
+      advances: twoAdvance(
+        'I\'m in more of a growth phase right now, actually.'
+      ),
     }),
     message({
-      text: 'Yeah',
+      text: 'I\'m in more of a growth phase right now, actually.',
       speaker: SELF_SPEAKER,
     }),
     message({
       text:
-        'For 20 limes, my guys will start working for you, selling your stuff, buying your seeds...',
+        'That\'s cool. Listen, I got some guys who can start right away. Been in the lime industry a couple decades, best salesmen you\'ll ever meet.',
       speaker: OTHER_SPEAKER,
-      advances: [makeAdvance({ text: 'Uh', advanceBy: 2, }),],
+      advances: [
+        makeAdvance({ text: 'That sounds promising...', advanceBy: 2, }),
+      ],
     }),
     message({
-      text: 'Uh',
+      text: 'That sounds promising...',
+      speaker: SELF_SPEAKER,
+    }),
+    message({
+      text:
+        'Yeah and they\'re fresh out of college so they\'ll work for food. Say, 20 limes?',
+      speaker: OTHER_SPEAKER,
+      advances: [
+        makeAdvance({
+          text: 'Wait, how is that possible? With decades of experience?',
+          advanceBy: 2,
+        }),
+      ],
+    }),
+    message({
+      text: 'Wait, how is that possible? With decades of experience?',
       speaker: SELF_SPEAKER,
     }),
     message({
@@ -44,10 +63,10 @@ export default {
       speaker: TUTORIAL,
       advances: [
         makeAdvance({
-          text: 'Not right now',
+          text: 'I\'m gonna hold off for now, I think.',
         }),
         makeAdvance({
-          text: 'Yeah what else are they good for?',
+          text: 'Might as well.',
           actions: [
             makeTrySpendAction({
               cost: { [LIMES]: 20, },

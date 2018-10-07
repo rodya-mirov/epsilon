@@ -15,7 +15,7 @@ import './app.css';
 import { startMarketUnlockConversation, } from '../../modules/conversation';
 
 const UnlockMarketButton = ({ onClick, }) => (
-  <div className="unlockButton" onClick={onClick}>
+  <div className="unlockButton" onClick={onClick} style={{ cursor: 'pointer', }}>
     Unlock Market
   </div>
 );
