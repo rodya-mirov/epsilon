@@ -10,7 +10,7 @@ div.market {
 table.market {
   font-family: "Courier New", Courier, monospace;
   text-align: center;
-  background-color: #b36b34;
+  background-color: #81af54;
   color: black;
 }
 
@@ -23,15 +23,15 @@ td.marketplot {
 }
 
 td.marketplot-empty {
-  color: brown;
+  color: #407429;
 }
 
 td.marketplot-merchant {
-  color: goldenrod;
+  color: #e7d8d8;
 }
 
 td.marketplot-stand {
-  color: black;
+  color: #a64634;
 }
 
 td.marketplot-customer-bartering {
@@ -39,9 +39,9 @@ td.marketplot-customer-bartering {
 }
 
 td.marketplot-pedestrian {
-  color: #ffaa80;
+  color: #5a4d4d;
 }
 
 td.marketplot-accounting-object {
-  color: bisque;
+  color: white;
 }

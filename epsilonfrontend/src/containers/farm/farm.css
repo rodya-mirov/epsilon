@@ -4,7 +4,7 @@ div.farm {
   padding: 25px;
   align-content: center;
   vertical-align: middle;
-  border: 1px solid black;
+  border: 1px solid;
 }
 
 /* Table of the farm plots */

@@ -46,7 +46,7 @@ const makeSquareSymbol = ({ type, }) => {
 
   case CUSTOMER_BARTERING:
   case PEDESTRIAN:
-    return 'c';
+    return '\u0109';
 
   case ACCOUNTING_OBJECT:
     return '&';
@@ -157,7 +157,7 @@ const MarketGrid = ({ squares, merchantStands, pedestrians, }) => {
   });
 
   return (
-    <div className="market rounded border-success">
+    <div className="market rounded border-warning">
       <table className="market rounded">
         <tbody>
           {processedSquares.map((row, rowIndex) => (
