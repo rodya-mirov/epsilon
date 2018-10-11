@@ -45,3 +45,29 @@ td.marketplot-pedestrian {
 td.marketplot-accounting-object {
   color: white;
 }
+
+button.arial {
+  font-family: "Arial Unicode MS";
+  font-size: 30px;
+  padding: 0px;
+  display: block;
+}
+
+div.inline {
+  display: inline-block;
+  margin: 0px;
+  padding: 0px;
+}
+
+div.center {
+  align-items: center;
+  display: flex;
+}
+
+div.grey {
+  color: grey;
+}
+
+div.pointer {
+  cursor: pointer;
+}

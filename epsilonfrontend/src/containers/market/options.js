@@ -11,6 +11,8 @@ import {
 
 import { toEnglishList, } from '../../utils';
 
+import './market.css';
+
 const resourceString = costs => {
   const costStrings = Object.keys(costs).map(key => `${costs[key]} ${key}`);
   return toEnglishList(costStrings);
@@ -49,31 +51,39 @@ const TransactionOptions = ({ transactions, modifyTransaction, }) => {
   return (
     <div>
       <h6 className="font-weight-bold">Transaction Precedence</h6>
-      <ul>
+      <div>
         {usefulTransactions.map((transaction, tInd) => {
           const { activated, } = transaction;
           return (
-            <li key={tInd}>
-              <input
-                type="checkbox"
-                checked={activated}
-                onChange={() => modifyTransaction(tInd, ACTIVATE)}
-              />
-              <button
-                onClick={() => modifyTransaction(tInd, INCREASE_PRIORITY)}
-              >
-                Up
-              </button>
-              <button
-                onClick={() => modifyTransaction(tInd, DECREATE_PRIORITY)}
-              >
-                Down
-              </button>
-              {transaction.description}
-            </li>
+            <div className="center" key={tInd}>
+              <div className="inline">
+                <input
+                  className="mr-2"
+                  type="checkbox"
+                  checked={activated}
+                  onChange={() => modifyTransaction(tInd, ACTIVATE)}
+                />
+              </div>
+              <div className="mr-2 inline grey pointer">
+                <div
+                  className="arial"
+                  onClick={() => modifyTransaction(tInd, INCREASE_PRIORITY)}
+                >
+                  {'\u25B2'}
+                </div>
+                <div
+                  className="arial"
+                  onClick={() => modifyTransaction(tInd, DECREATE_PRIORITY)}
+                >
+                  {'\u25BC'}
+                </div>
+              </div>
+
+              <div className="inline"> {transaction.description} </div>
+            </div>
           );
         })}
-      </ul>
+      </div>
     </div>
   );
 };
